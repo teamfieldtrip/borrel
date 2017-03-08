@@ -4,10 +4,10 @@ function onSend(){
 
   var socket = io('http://localhost:3000');
 
-  var gps_location = {long: '52.501069', lat: '6.079889'};
+  var gps_location = {lat: '52.501069', lon: '6.079889'};
 
-  gps_location.long = document.getElementById('gps_long').value;
   gps_location.lat = document.getElementById('gps_lat').value;
+  gps_location.lon = document.getElementById('gps_lon').value;
 
   socket.on('connect', () => {
 	socket.emit('gps', gps_location);
@@ -16,6 +16,6 @@ function onSend(){
 
 </script>
 
-<input type="text" id="gps_long" />
 <input type="text" id="gps_lat" />
-<input type="button" value="Send" onclick="onSend()"/>
+<input type="text" id="gps_lon" />
+<input type="submit" onclick="onSend()"/>
