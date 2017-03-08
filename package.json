@@ -4,7 +4,7 @@
   "description": "Borrel, powered by NodeJS is the server for the Spirit Hunt application(s).",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "eslint src/ && mocha tests/"
   },
   "repository": {
     "type": "git",
@@ -18,5 +18,10 @@
   "homepage": "https://github.com/teamfieldtrip/borrel#readme",
   "dependencies": {
     "socket.io": "^1.7.3"
+  },
+  "devDependencies": {
+    "eslint": "^3.17.1",
+    "eslint-plugin-standard": "^2.1.1",
+    "mocha": "^3.2.0"
   }
 }
