@@ -1,0 +1,19 @@
+{
+  "name": "borrel",
+  "version": "1.0.0",
+  "description": "Borrel, powered by NodeJS is the server for the Spirit Hunt application(s).",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/teamfieldtrip/borrel.git"
+  },
+  "author": "Team Field Trip",
+  "license": "GPL-3.0",
+  "bugs": {
+    "url": "https://github.com/teamfieldtrip/borrel/issues"
+  },
+  "homepage": "https://github.com/teamfieldtrip/borrel#readme"
+}
