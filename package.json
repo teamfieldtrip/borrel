@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/teamfieldtrip/borrel/issues"
   },
-  "homepage": "https://github.com/teamfieldtrip/borrel#readme"
+  "homepage": "https://github.com/teamfieldtrip/borrel#readme",
+  "dependencies": {
+    "socket.io": "^1.7.3"
+  }
 }
