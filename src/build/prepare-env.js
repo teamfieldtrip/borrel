@@ -5,19 +5,10 @@
  */
 
 (function () {
-  var winston = require('winston')
+  let winston = require('winston')
   let fs = require('fs')
   let root = require('app-root-path')
-
-  var exists = function (file) {
-    let fs = require('fs')
-    try {
-      let stat = fs.statSync(file)
-      return stat.isFile()
-    } catch (error) {
-      return false
-    }
-  }
+  let exists = require('file-exists').sync
 
   let envFile = `${root}/.env`
   let envSourceFile = `${root}/.env.example`
