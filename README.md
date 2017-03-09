@@ -13,6 +13,22 @@ We're using the [standard][link-cs] code style for Javascript, so no semicolons 
 spaces indentation. Furthermore, we're using ES7, because preparing for the
 past is something historians do, not software engineers.
 
+## Running the application
+
+First off, install the requirements
+
+```shell
+npm install
+```
+
+Then, just run it using npm:
+
+```shell
+npm start
+```
+
+Foreman will handle taking care of launching all instances.
+
 <!-- Shield images -->
 [shield-build]: https://img.shields.io/travis/teamfieldtrip/borrel.svg
 [shield-cc]: https://img.shields.io/codeclimate/github/teamfieldtrip/borrel.svg
