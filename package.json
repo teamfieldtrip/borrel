@@ -17,6 +17,8 @@
   },
   "homepage": "https://github.com/teamfieldtrip/borrel#readme",
   "dependencies": {
+    "mysql": "^2.13.0",
+    "sequelize": "^3.30.2",
     "socket.io": "^1.7.3"
   },
   "devDependencies": {
