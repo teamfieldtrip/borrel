@@ -1,3 +1,9 @@
+/**
+ * Player model
+ *
+ * @author Remco Schipper <github@remcoschipper.com>
+ */
+
 module.exports = function (sequelize, DataTypes) {
   return sequelize.define('player', {
     name: {

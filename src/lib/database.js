@@ -1,3 +1,9 @@
+/**
+ * Handles the creation of the database connection
+ *
+ * @author Remco Schipper <github@remcoschipper.com>
+ */
+
 const async = require('async')
 const Sequelize = require('sequelize')
 const winston = require('winston')
@@ -10,23 +16,6 @@ const models = [
   require('../model/player')
 ]
 
-/**
- * Creates the sequelize instance
- * @param callback
- */
-const create = function (callback) {
-  return callback(null, new Sequelize(process.env.DB_SCHEMA, process.env.DB_USER, process.env.DB_PASS, {
-    host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
-    dialect: process.env.DB_DIALECT,
-    pool: 10,
-    logging: (process.env.DB_LOGGING === 'true'),
-    define: {
-      charset: 'utf8',
-      collate: 'utf8_general_ci'
-    }
-  }))
-}
 /**
  * Verifies the database credentials by connecting
  * @param {Sequelize} connection
@@ -73,18 +62,22 @@ const associate = function (connection, callback) {
  * Exposes the sequelize object to the world!
  * @type {null|Sequelize}
  */
-exports.connection = null
+exports.connection = new Sequelize(process.env.DB_SCHEMA, process.env.DB_USER, process.env.DB_PASS, {
+  host: process.env.DB_HOST,
+  port: process.env.DB_PORT,
+  dialect: process.env.DB_DIALECT,
+  pool: 10,
+  logging: (process.env.DB_LOGGING === 'true'),
+  define: {
+    charset: 'utf8',
+    collate: 'utf8_general_ci'
+  }
+})
 
 /**
  * Opens the database connection and prepares the models
  * @param {function} callback
  */
 exports.boot = function (callback) {
-  async.waterfall([create, verify, load, associate], (error, connection) => {
-    if (error) {
-      return callback(error.message)
-    }
-    exports.connection = connection
-    return callback(null)
-  })
+  async.waterfall([async.constant(exports.connection), verify, load, associate], callback)
 }
