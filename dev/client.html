@@ -1,0 +1,18 @@
+<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script>
+function onSend(){
+
+  var socket = io('http://localhost:14924');
+
+  var pollData = {};
+
+  socket.on('connect', () => {
+	socket.emit('poll_data', pollData);
+  });
+}
+
+</script>
+
+<input type="text" id="gps_lat" />
+<input type="text" id="gps_lon" />
+<input type="submit" onclick="onSend()"/>
