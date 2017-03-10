@@ -1,0 +1,14 @@
+engines:
+  markdownlint:
+    enabled: true
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc-codeclimate.json
+  duplication:
+    enabled: true
+
+ratings:
+   paths:
+   - "src/**.js"
+   - "*.md"
