@@ -15,25 +15,14 @@ module.exports = function (winston) {
 
   let commandLines = [
     beforeLine,
-    '# Disable this by removing the lines below. Leave the above line intact,',
-    '# as the file checker looks for this.',
-    'git diff --name-only --cached --relative \\',
-    '  | grep \'\\.jsx\\?$\' \\',
-    `  | xargs ${root}/node_modules/.bin/eslint`,
-    'if [ $? -ne 0 ];',
-    'then',
-    '  exit 1;',
-    'fi',
+    `${root}/bin/precommit-hook.sh`,
     afterLine
   ]
 
   if (!exists(precommitFile)) {
     winston.debug(`Creating file with basic content at ${precommitFile}...`)
     try {
-      let content = [
-        '#!/usr/bin/env bash',
-        'set -xe'
-      ].join('\n')
+      let content = '#!/usr/bin/env bash\n'
 
       fs.writeFileSync(precommitFile, content, {
         mode: 0o775
