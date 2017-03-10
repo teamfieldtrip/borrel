@@ -1,7 +1,7 @@
 /**
  * Prepares an environment file
  *
- * @author Roelof Roos
+ * @author Roelof Roos <github@roelof.io>
  */
 
 module.exports = function (winston) {

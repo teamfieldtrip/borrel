@@ -1,7 +1,7 @@
 /**
  * Runs all build scripts.
  *
- * @author Roelof Roos
+ * @author Roelof Roos <github@roelof.io>
  */
 
 (function () {
