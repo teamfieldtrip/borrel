@@ -4,8 +4,7 @@
  * @author Roelof Roos
  */
 
-(function () {
-  let winston = require('winston')
+module.exports = function (winston) {
   let fs = require('fs')
   let root = require('app-root-path')
   let exists = require('file-exists').sync
@@ -41,7 +40,7 @@
       })
     } catch (err) {
       winston.error(`Failed to write ${precommitFile}: `, err)
-      process.exit(1)
+      return 1
     }
   }
 
@@ -61,7 +60,7 @@
 
   if (contains) {
     winston.debug(`${precommitFile} contains a git hook like ours`)
-    process.exit(0)
+    return 0
   }
 
   winston.info(`Adding pre-commit hook to ${precommitFile}`)
@@ -75,4 +74,4 @@
   winston.debug(`Updating ${precommitFile}...`)
 
   fs.writeFileSync(precommitFile, lines.join('\n'))
-}())
+}

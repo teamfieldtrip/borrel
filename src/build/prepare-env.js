@@ -4,8 +4,7 @@
  * @author Roelof Roos
  */
 
-(function () {
-  let winston = require('winston')
+module.exports = function (winston) {
   let fs = require('fs')
   let root = require('app-root-path')
   let exists = require('file-exists').sync
@@ -17,22 +16,19 @@
   let envSourceFileExists = exists(envSourceFile)
 
   if (envFileExists) {
-    process.exit(0)
-    return
+    return 0
   }
 
   if (!envSourceFileExists) {
     winston.error(`Cannot find dotenv base file at ${envSourceFile}...`)
-    process.exit(1)
-    return
+    return 1
   }
 
   winston.log(`Creating default dotenv file at ${envFile}`)
   fs.readFile(envSourceFile, 'utf8', function (err, data) {
     if (err) {
       winston.error(`Failed to read ${envSourceFile}: `, err)
-      process.exit(err.code || 1)
-      return
+      return (err.code || 1)
     }
 
     winston.debug(`Read data from ${envSourceFile}.`)
@@ -42,8 +38,8 @@
         winston.log(`Created .env file.`)
       } else {
         winston.error(`Failed to read ${envSourceFile}: `, err)
-        process.exit(err.code || 1)
+        return (err.code || 1)
       }
     })
   })
-}())
+}
