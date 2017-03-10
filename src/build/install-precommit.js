@@ -8,16 +8,9 @@
   let winston = require('winston')
   let fs = require('fs')
   let root = require('app-root-path')
-  let os = require('os')
   let exists = require('file-exists').sync
 
-  if (os.type() === 'Windows_NT') {
-    process.exit(1)
-    return
-  }
-
   let precommitFile = `${root}/.git/hooks/pre-commit`
-
   let beforeLine = '#/start-eslint'
   let afterLine = '#/end-eslint'
 
