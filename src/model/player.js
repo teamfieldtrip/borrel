@@ -6,7 +6,7 @@
  */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('player', {
+  const Player = sequelize.define('player', {
     name: {
       type: DataTypes.STRING(64),
       allowNull: false
@@ -18,8 +18,11 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function (models) {
-        // TODO add relations
+        // NOTE models contains all models
+        Player.hasOne(models.account)
       }
     }
   })
+
+  return Player
 }

@@ -13,6 +13,7 @@ const winston = require('winston')
  * @type {[Sequelize.Model]}
  */
 const models = [
+  require('../model/account'),
   require('../model/player')
 ]
 
