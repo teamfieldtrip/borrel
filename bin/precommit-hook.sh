@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+##
+## Does a thing before allowing you to send your thing to the thing
+##
+## @author Roelof Roos <github@roelof.io>
+##
+
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 GIT_DIR=$(dirname ${DIR})
 

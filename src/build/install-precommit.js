@@ -1,7 +1,7 @@
 /**
  * Adds a pre-commit hook, if it doesn't exist yet.
  *
- * @author Roelof Roos
+ * @author Roelof Roos <github@roelof.io>
  */
 
 module.exports = function (winston) {
