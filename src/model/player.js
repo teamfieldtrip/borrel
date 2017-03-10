@@ -1,0 +1,18 @@
+module.exports = function (sequelize, DataTypes) {
+  return sequelize.define('player', {
+    name: {
+      type: DataTypes.STRING(64),
+      allowNull: false
+    },
+    description: {
+      type: DataTypes.TEXT,
+      allowNull: true
+    }
+  }, {
+    classMethods: {
+      associate: function (models) {
+        // TODO add relations
+      }
+    }
+  })
+}
