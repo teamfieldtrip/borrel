@@ -20,6 +20,7 @@
   "homepage": "https://github.com/teamfieldtrip/borrel#readme",
   "dependencies": {
     "app-root-path": "2.0.1",
+    "async": "2.1.5",
     "file-exists": "3.0.2",
     "foreman": "2.0.0",
     "mysql": "^2.13.0",
