@@ -2,6 +2,7 @@
 <script>
 var socket = io('http://localhost:14924');
 
+// Return poll data with the connection status and a timestamp
 function checkConnection(){
   socket.on('connect', () => {
 
