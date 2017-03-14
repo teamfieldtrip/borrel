@@ -4,7 +4,7 @@
   "description": "Borrel, powered by NodeJS is the server for the Spirit Hunt application(s).",
   "main": "index.js",
   "scripts": {
-    "postinstall": "bin/apply-flow-config.sh && node src/build/build.js",
+    "postinstall": "bin/postinstall-hook.sh",
     "test": "eslint . && mocha tests/",
     "start": "nf start",
     "migrate": "sequelize db:migrate",
