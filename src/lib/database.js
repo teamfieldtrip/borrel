@@ -67,6 +67,7 @@ exports.connection = new Sequelize(process.env.DB_SCHEMA, process.env.DB_USER, p
   port: process.env.DB_PORT,
   dialect: process.env.DB_DIALECT,
   pool: 10,
+  storage: process.env.DB_PATH,
   logging: (process.env.DB_LOGGING === 'true'),
   define: {
     charset: 'utf8',

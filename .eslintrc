@@ -12,7 +12,7 @@
     "markdown"
   ],
   "rules": {
-    "filenames/match-regex": [2, "^[a-z][a-z0-9]+(-[a-z0-9]+)*$"],
+    "filenames/match-regex": [2, "^[a-z0-9]+(-[a-z0-9]+)*$"],
     "filenames/no-index": 2
   }
 }
