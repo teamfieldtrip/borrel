@@ -1,6 +1,7 @@
 /**
  * Player model
  *
+ * @author Roelof Roos <github@roelof.io>
  * @author Remco Schipper <github@remcoschipper.com>
  */
 
