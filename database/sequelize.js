@@ -14,6 +14,10 @@ module.exports = {
     'password': process.env.DB_PASS,
     'database': process.env.DB_SCHEMA,
     'storage': process.env.DB_PATH,
-    'seederStorage': 'sequelize'
+    'seederStorage': 'sequelize',
+    'define': {
+      'charset': 'utf8',
+      'collate': 'utf8_general_ci'
+    }
   }
 }
