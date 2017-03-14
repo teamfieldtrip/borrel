@@ -11,7 +11,7 @@ function checkConnection(){
         timestamp: new Date()
     }
 
-    socket.emit('pollData', pollData);
+    socket.emit('poll', pollData);
     console.log(pollData);
   });
 }
