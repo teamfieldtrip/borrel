@@ -1,0 +1,20 @@
+<script src="http://localhost:14924/socket.io/socket.io.js"></script>
+<script>
+var socket = io('http://localhost:14924');
+
+// Return poll data with the connection status and a timestamp
+function checkConnection(){
+  socket.on('connect', () => {
+
+    var pollData = {
+        status: socket.connected,
+        timestamp: new Date()
+    }
+
+    socket.emit('poll', pollData);
+    console.log(pollData);
+  });
+}
+
+checkConnection();
+</script>
