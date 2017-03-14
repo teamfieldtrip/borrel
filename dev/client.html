@@ -1,18 +1,20 @@
-<script src="http://localhost:3000/socket.io/socket.io.js"></script>
+<script src="http://localhost:14924/socket.io/socket.io.js"></script>
 <script>
-function onSend(){
+var socket = io('http://localhost:14924');
 
-  var socket = io('http://localhost:14924');
-
-  var pollData = {};
-
+// Return poll data with the connection status and a timestamp
+function checkConnection(){
   socket.on('connect', () => {
-	socket.emit('poll_data', pollData);
+
+    var pollData = {
+        status: socket.connected,
+        timestamp: new Date()
+    }
+
+    socket.emit('poll', pollData);
+    console.log(pollData);
   });
 }
 
+checkConnection();
 </script>
-
-<input type="text" id="gps_lat" />
-<input type="text" id="gps_lon" />
-<input type="submit" onclick="onSend()"/>
