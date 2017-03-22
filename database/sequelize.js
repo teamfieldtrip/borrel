@@ -19,5 +19,9 @@ module.exports = {
       'charset': 'utf8',
       'collate': 'utf8_general_ci'
     }
+  },
+  testing: {
+    dialect: 'sqlite',
+    storage: 'data/test-db.db'
   }
 }

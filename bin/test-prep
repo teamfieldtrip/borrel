@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+
+DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+GIT_DIR=$(dirname ${DIR})
+
+SEQUELIZE_BIN="${GIT_DIR}/node_modules/.bin/sequelize"
+SEQUELIZE_DB="${GIT_DIR}/data/test-db.db"
+
+cd $GIT_DIR
+
+if [ ! -d "${GIT_DIR}/data" ]; then
+    echo "+ mkdir \"${GIT_DIR}/data\""
+    mkdir "${GIT_DIR}/data"
+fi
+
+if [ -z "$1" -o "$1" = "up" ]; then
+    echo "+ echo '' > \"${GIT_DIR}/data/test-db.db\""
+    echo '' > $SEQUELIZE_DB
+
+    set -xe
+
+    # Run migrations and seeders
+    $SEQUELIZE_BIN --env=testing db:migrate
+    $SEQUELIZE_BIN --env=testing db:seed:all
+elif [ "$1" = "down" ]; then
+
+    if [ ! -f $SEQUELIZE_DB ]; then
+        echo "Database does not exist. Aborting"
+        exit 255
+    fi
+
+    set -xe
+
+    # Undo migrations and seeders
+    $SEQUELIZE_BIN --env=testing db:seed:undo:all
+    $SEQUELIZE_BIN --env=testing db:migrate:undo:all
+
+    # Delete database file
+    rm $SEQUELIZE_DB
+else
+    echo "Invalid argument, specify either up or down."
+    exit 1
+fi

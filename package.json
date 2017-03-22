@@ -8,7 +8,8 @@
     "test": "eslint src/ && mocha tests/",
     "start": "nf start",
     "migrate": "sequelize db:migrate",
-    "seed": "sequelize db:seed:all"
+    "seed": "sequelize db:seed:all",
+    "test-full": "bin/test-prep up && NODE_ENV=testing npm test && bin/test-prep down"
   },
   "repository": {
     "type": "git",
