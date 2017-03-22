@@ -1,5 +1,5 @@
 /**
- * Handles the creation of the database connection
+ * Creates the socket object
  *
  * @author Sven Boekelder <sven@plplpl.nl>
  * @author Remco Schipper <github@remcoschipper.com>
