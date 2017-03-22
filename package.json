@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "postinstall": "bin/apply-flow-config.sh && node src/build/build.js",
-    "test": "eslint src/ && mocha tests/",
+    "test": "eslint . && mocha tests/",
     "start": "nf start",
     "migrate": "sequelize db:migrate",
     "seed": "sequelize db:seed:all",
