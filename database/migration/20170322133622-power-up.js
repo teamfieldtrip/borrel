@@ -1,12 +1,12 @@
 /**
- * Defines the account entity
+ * Defines the power-up entity
  *
  * @author Remco Schipper <github@remcoschipper.com>
  */
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('accounts', {
+    return queryInterface.createTable('powerUps', {
       id: {
         allowNull: false,
         autoIncrement: true,
@@ -17,32 +17,9 @@ module.exports = {
         allowNull: false,
         type: Sequelize.STRING(64)
       },
-      email: {
+      persistent: {
         allowNull: false,
-        type: Sequelize.STRING(254)
-      },
-      password: {
-        allowNull: false,
-        type: Sequelize.TEXT
-      },
-      coins: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      token: {
-        allowNull: true,
-        type: Sequelize.STRING(64)
-      },
-      experiencePoints: {
-        allowNull: false,
-        type: Sequelize.INTEGER,
-        defaultValue: 0
-      },
-      preferredTeam: {
-        allowNull: false,
-        type: Sequelize.ENUM('black', 'red'),
-        defaultValue: 'black'
+        type: Sequelize.BOOLEAN
       },
       createdAt: {
         allowNull: false,
@@ -66,6 +43,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('accounts')
+    return queryInterface.dropTable('powerUps')
   }
 };
