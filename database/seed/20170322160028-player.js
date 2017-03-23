@@ -3,40 +3,59 @@
  *
  * @author Roelof Roos <github@roelof.io>
  */
+
+let uuids = [
+  '2f2fcbee-5cae-4e9f-9ea7-39e86d9d02de',
+  '935e5cdd-a91a-4772-b3a3-b14509f8067b',
+  '97562f6b-f996-4b94-a858-5a1cb57f616a',
+  '78f61c0f-1f03-4b76-9e12-828a4fa719f8'
+]
+
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.bulkInsert('players', [
+    // Build the data
+    let data = [
       {
-        id: '2F2FCBEE-5CAE-4E9F-9EA7-39E86D9D02DE',
+        id: uuids.pop(),
         latitude: 52.874,
         longitude: 5.998,
         score: 12,
-        team: 1
+        team: 1,
+        result: 4
       },
       {
-        id: '935E5CDD-A91A-4772-B3A3-B14509F8067B',
+        id: uuids.pop(),
         latitude: 52.834,
         longitude: 5.993,
         score: 14,
         team: 2
       },
       {
-        id: '97562F6B-F996-4B94-A858-5A1CB57F616A',
+        id: uuids.pop(),
         latitude: 52.834,
         longitude: 6.001
       },
       {
-        id: '78F61C0F-1F03-4B76-9E12-828A4FA719F8'
+        id: uuids.pop()
       }
-    ], {})
+    ]
+
+    // Create a map of all various promises that we use for each bulkInsert
+    let promises = []
+    data.forEach(function (row) {
+      promises.push(queryInterface.bulkInsert('players', [row], {}))
+    })
+
+    // Wait for all promises to complete. The up method expects a Promise to
+    // be returned so it can call the `then` method.
+    return Promise.all(promises)
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.bulkDelete('players', null, [
-      {id: '2F2FCBEE-5CAE-4E9F-9EA7-39E86D9D02DE'},
-      {id: '935E5CDD-A91A-4772-B3A3-B14509F8067B'},
-      {id: '97562F6B-F996-4B94-A858-5A1CB57F616A'},
-      {id: '78F61C0F-1F03-4B76-9E12-828A4FA719F8'}
-    ])
+    var rows = []
+    uuids.forEach(function (id) {
+      rows.push({id: id})
+    })
+    return queryInterface.bulkDelete('players', null, rows)
   }
 }
