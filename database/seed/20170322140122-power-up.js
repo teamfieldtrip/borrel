@@ -24,4 +24,4 @@ module.exports = {
   down: function (queryInterface, Sequelize) {
     return queryInterface.bulkDelete('powerUps', null, {})
   }
-};
+}

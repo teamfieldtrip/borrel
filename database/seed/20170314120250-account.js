@@ -29,4 +29,4 @@ module.exports = {
   down: function (queryInterface, Sequelize) {
     return queryInterface.bulkDelete('accounts', null, {})
   }
-};
+}
