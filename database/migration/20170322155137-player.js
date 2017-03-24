@@ -41,19 +41,19 @@ module.exports = {
         defaultValue: null
       },
       createdAt: {
+        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-        type: Sequelize.DATE
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       },
       deletedAt: {
+        type: Sequelize.DATE,
         allowNull: true,
-        defaultValue: null,
-        type: Sequelize.DATE
+        defaultValue: null
       },
       updatedAt: {
+        type: Sequelize.DATE,
         allowNull: false,
-        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
-        type: Sequelize.DATE
+        defaultValue: Sequelize.literal('CURRENT_TIMESTAMP')
       }
     }, {
       charset: 'utf8',
