@@ -1,44 +1,36 @@
 /**
- * Defines the player entity
- *
- * @author Roelof Roos <github@roelof.io>
+  *
+  *
+  * @author Roelof Roos <github@roelof.io>
  */
 
 module.exports = {
   up: function (queryInterface, Sequelize) {
-    return queryInterface.createTable('players', {
+    return queryInterface.createTable('purchases', {
       id: {
         type: Sequelize.UUID,
         allowNull: false,
         primaryKey: true
       },
-      latitude: {
-        type: Sequelize.FLOAT,
-        allowNull: true
-      },
-      longitude: {
-        type: Sequelize.FLOAT,
-        allowNull: true
-      },
-      score: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-      },
-      target: {
+      item: {
         type: Sequelize.UUID,
         allowNull: true,
         defaultValue: null
       },
-      team: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        defaultValue: 0
-      },
-      result: {
-        type: Sequelize.INTEGER,
+      account: {
+        type: Sequelize.UUID,
         allowNull: true,
         defaultValue: null
+      },
+      date: {
+        type: Sequelize.DATE,
+        allowNull: true,
+        defaultValue: null
+      },
+      cost: {
+        type: Sequelize.FLOAT,
+        allowNull: false,
+        defaultValue: 0.00
       },
       createdAt: {
         type: Sequelize.DATE,
@@ -62,6 +54,6 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    return queryInterface.dropTable('players')
+    return queryInterface.dropTable('purchases')
   }
 }
