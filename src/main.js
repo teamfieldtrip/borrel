@@ -15,7 +15,9 @@ const socket = require('./lib/socket')
 // Powered by http://trumpipsum.net/
 console.log('I know words. I have the best words.')
 
-async.waterfall([database.boot, socket.boot], (error) => {
+async.eachSeries([database.boot, socket.boot], (fn, callback) => {
+  return fn(callback)
+}, (error) => {
   if (error) {
     winston.error('Could not start: %s', error)
     process.exit(1)
