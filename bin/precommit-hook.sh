@@ -6,18 +6,37 @@
 ## @author Roelof Roos <github@roelof.io>
 ##
 
-DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-GIT_DIR=$(dirname ${DIR})
+# Get the root path from git, insteado of all the tricks
+ROOT="$(cd "$( dirname "${BASH_SOURCE[0]}" )" && git rev-parse --show-toplevel)"
+NODE_BIN="${ROOT}/node_modules/.bin"
 
-# Checks for changed Javascript, and runs ESLint if required
-CHANGED_FILES=$(git diff --name-only --cached --relative | grep '\.jsx\?$')
-if [ $? -eq 0 ]; then
-    echo Running ESLint...
-    echo $CHANGED_FILES | xargs $GIT_DIR/node_modules/.bin/eslint
-    if [ $? -ne 0 ]; then
-        echo 'ESLint failed, aborting commit.'
-        exit 1;
-    else
-        echo 'Good to go!'
+# Define functions
+function complete {
+    # Restore stash
+    git stash pop -q
+
+    # Return status
+    exit "$1"
+}
+
+# Tries to call the given function, exiting if it fails
+function try_command {
+    if ! "$@"; then
+        complete $?
     fi
-fi
+}
+
+# Lets get verbose
+set -xe
+
+# Got to the git root
+cd "${ROOT}"
+
+# Stash all changes not indexed
+git stash -q --keep-index
+
+# Try to run eslint
+try_command "${NODE_BIN}/eslint" .
+
+# Complete with a success
+complete 0
