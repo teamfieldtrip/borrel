@@ -27,8 +27,8 @@ const update = function (data, callback) {
     if (this.data.gps.latitude === data.latitude && this.data.gps.longitude === data.longitude) {
       return callback('equal')
     }
-    // Set the update time
-    this.data.gps.time = data.time
+    // Set the updated GPS data
+    this.data.gps = data
     // Update the player instance
     database.connection.models.player.update({
       latitude: data.latitude,
