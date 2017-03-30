@@ -15,11 +15,7 @@ module.exports = {
       powerUp: {
         type: Sequelize.UUID,
         allowNull: true,
-        defaultValue: null,
-        references: {
-          model: 'powerUps',
-          key: 'id'
-        }
+        defaultValue: null
       },
       cost: {
         type: Sequelize.FLOAT,

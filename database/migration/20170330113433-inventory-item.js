@@ -15,20 +15,12 @@ module.exports = {
       player: {
         type: Sequelize.UUID,
         allowNull: true,
-        defaultValue: null,
-        references: {
-          model: 'players',
-          key: 'id'
-        }
+        defaultValue: null
       },
       powerUp: {
         type: Sequelize.UUID,
         allowNull: true,
-        defaultValue: null,
-        references: {
-          model: 'powerUps',
-          key: 'id'
-        }
+        defaultValue: null
       },
       purchaseDate: {
         type: Sequelize.DATE,

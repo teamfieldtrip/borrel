@@ -37,11 +37,10 @@ module.exports = function (sequelize, DataTypes) {
     ],
     classMethods: {
       associate: function (models) {
-        // NOTE models contains all models
         // A purchase is always linked to an account
         Purchase.belongsTo(models.account, {foreignKey: 'account'})
         // A purchase is always linked to a StoreItem
-        Purchase.belongsTo(models.storeItem, {foreignKey: 'item'})
+        Purchase.belongsTo(models.storeEntry, {foreignKey: 'item'})
       }
     }
   })
