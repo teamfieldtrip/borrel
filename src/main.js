@@ -12,10 +12,13 @@ const winston = require('winston')
 const database = require('./lib/database')
 const socket = require('./lib/socket')
 
+const player = require('./handler/player')
+const gps = require('./handler/gps')
+
 // Powered by http://trumpipsum.net/
 console.log('I know words. I have the best words.')
 
-async.eachSeries([database.boot, socket.boot], (fn, callback) => {
+async.eachSeries([database.boot, socket.boot, player.boot, gps.boot], (fn, callback) => {
   return fn(callback)
 }, (error) => {
   if (error) {
