@@ -73,11 +73,10 @@ module.exports = function (sequelize, DataTypes) {
     ],
     classMethods: {
       associate: function (models) {
-        // NOTE models contains all models
         // A player is always linked to an account
-        Player.belongsTo(models.account)
+        Player.belongsTo(models.account, {foreignKey: 'account'})
         // A player also has an account
-        Player.hasOne(models.player)
+        Player.hasMany(models.inventorItem, {foreignKey: 'player'})
       }
     }
   })

@@ -5,7 +5,7 @@
  */
 
 module.exports = function (sequelize, DataTypes) {
-  const Purchase = sequelize.define('purchase', {
+  const InventoryItem = sequelize.define('inventoryItem', {
     // Account ID
     id: {
       type: DataTypes.UUID,
@@ -17,33 +17,30 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     //
-    date: {
+    purchaseDate: {
       type: DataTypes.DATE,
       allowNull: true
     },
-    // The obtained score
-    cost: {
-      type: DataTypes.FLOAT,
-      defaultValue: 0.00,
-      allowNull: false,
-      validate: {
-        min: 0.00
-      }
+    //
+    useDate: {
+      type: DataTypes.DATE,
+      allowNull: true
     }
   }, {
-    comment: 'A purchase, made by an account and associated with a StoreItem.',
+    comment: 'An inventory item, traded in-game by a Player.',
     indexes: [
       {fields: ['id'], unique: true}
     ],
     classMethods: {
       associate: function (models) {
-        // A purchase is always linked to an account
-        Purchase.belongsTo(models.account, {foreignKey: 'account'})
+        // NOTE models contains all models
+        // An inventory item is game-bound, so it's connected to a player.
+        InventoryItem.belongsTo(models.player, {foreignKey: 'player'})
         // A purchase is always linked to a StoreItem
-        Purchase.belongsTo(models.storeEntry, {foreignKey: 'item'})
+        InventoryItem.belongsTo(models.powerUp, {foreignKey: 'powerUp'})
       }
     }
   })
 
-  return Purchase
+  return InventoryItem
 }
