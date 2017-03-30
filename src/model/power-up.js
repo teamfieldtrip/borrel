@@ -5,7 +5,7 @@
  */
 
 module.exports = function (sequelize, DataTypes) {
-  return sequelize.define('powerUp', {
+  const PowerUp = sequelize.define('powerUp', {
     id: {
       type: DataTypes.UUID,
       defaultValue: DataTypes.UUIDV4,
@@ -26,8 +26,13 @@ module.exports = function (sequelize, DataTypes) {
   }, {
     classMethods: {
       associate: function (models) {
-        // TODO add relations
+        // Each inventory item may have a powerup
+        PowerUp.hasMany(models.inventoryItem, {foreignKey: 'powerUp'})
+        // Each store entry may be linked to a powerup
+        PowerUp.hasMany(models.storeEntry, {foreignKey: 'powerUp'})
       }
     }
   })
+
+  return PowerUp
 }
