@@ -16,26 +16,6 @@ module.exports = function (sequelize, DataTypes) {
         isUUID: 4
       }
     },
-    // Power-up that this inventory item belongs to
-    powerUp: {
-      type: DataTypes.UUID,
-      defaultValue: null,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-        isUUID: 4
-      }
-    },
-    // Player that can use the item (game specific)
-    player: {
-      type: DataTypes.UUID,
-      defaultValue: null,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-        isUUID: 4
-      }
-    },
     //
     purchaseDate: {
       type: DataTypes.DATE,
@@ -57,8 +37,7 @@ module.exports = function (sequelize, DataTypes) {
         // An inventory item is game-bound, so it's connected to a player.
         InventoryItem.belongsTo(models.player, {foreignKey: 'player'})
         // A purchase is always linked to a StoreItem
-        // TODO Create StoreItem class
-        // Purchase.hasOne(models.storeItem, {foreignKey: 'item'})
+        InventoryItem.belongsTo(models.powerUp, {foreignKey: 'powerUp'})
       }
     }
   })
