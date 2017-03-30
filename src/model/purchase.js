@@ -16,26 +16,6 @@ module.exports = function (sequelize, DataTypes) {
         isUUID: 4
       }
     },
-    // Item that was purchased
-    item: {
-      type: DataTypes.UUID,
-      defaultValue: null,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-        isUUID: 4
-      }
-    },
-    // Account that bought the item
-    account: {
-      type: DataTypes.UUID,
-      defaultValue: null,
-      allowNull: true,
-      validate: {
-        notEmpty: true,
-        isUUID: 4
-      }
-    },
     //
     date: {
       type: DataTypes.DATE,
@@ -61,8 +41,7 @@ module.exports = function (sequelize, DataTypes) {
         // A purchase is always linked to an account
         Purchase.belongsTo(models.account, {foreignKey: 'account'})
         // A purchase is always linked to a StoreItem
-        // TODO Create StoreItem class
-        // Purchase.hasOne(models.storeItem, {foreignKey: 'item'})
+        Purchase.belongsTo(models.storeItem, {foreignKey: 'item'})
       }
     }
   })
