@@ -7,8 +7,12 @@ engines:
       config: .eslintrc-codeclimate.json
   duplication:
     enabled: true
+    config:
+      languages:
+      - javascript
 
 ratings:
    paths:
    - "src/**.js"
+   - "database/**.js"
    - "*.md"
