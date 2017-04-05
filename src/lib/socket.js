@@ -15,6 +15,7 @@ const server = http.createServer((req, res) => {
   res.end()
 })
 const socket = io.listen(server)
+// Firstly authenticate the client, afterwards create a data object to store user data
 socket.on('connection', socketioJwt.authorize({
   secret: process.env.JWT_SECRET,
   required: false
