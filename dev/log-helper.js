@@ -180,7 +180,7 @@ window.app = (function () {
     })
     logNode.appendChild(container)
 
-    // Scroll to bottem if we're at the bottom
+    // Scroll to bottom if we're at the bottom
     scrollToEnd()
 
     // Flush old entries after a timeout
