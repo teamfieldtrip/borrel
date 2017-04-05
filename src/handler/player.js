@@ -71,8 +71,7 @@ exports.events = events
  * @returns {*}
  */
 exports.boot = function (callback) {
-  socket.connection.on('connection', (client) => {
-    client.data = {}
+  socket.connection.on('authenticated', (client) => {
     client.on('player:create', create)
     client.on('player:resume', resume)
   })

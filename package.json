@@ -28,11 +28,13 @@
     "dotenv": "4.0.0",
     "file-exists": "3.0.2",
     "foreman": "2.0.0",
+    "jsonwebtoken": "^7.3.0",
     "lodash": "^4.17.4",
     "mysql": "^2.13.0",
     "sequelize": "^3.30.2",
     "sequelize-cli": "2.5.1",
     "socket.io": "^1.7.3",
+    "socketio-jwt": "4.5.0",
     "sqlite3": "3.1.8",
     "winston": "2.3.1"
   },
