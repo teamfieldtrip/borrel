@@ -19,7 +19,17 @@ const gps = require('./handler/gps')
 // Powered by http://trumpipsum.net/
 winston.log('I know words. I have the best words.')
 
-async.eachSeries([database.boot, socket.boot, auth.boot, player.boot, gps.boot], (fn, callback) => {
+// List of methods that start
+const mainMethods = [
+  database.boot,
+  socket.boot,
+  auth.boot,
+  player.boot,
+  gps.boot
+]
+
+// Start methods
+async.eachSeries(mainMethods, (fn, callback) => {
   // Log each invocation
   winston.log('Calling "%s" async', fn.name)
 
