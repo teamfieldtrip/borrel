@@ -5,16 +5,17 @@
  * @author Remco Schipper <github@remcoschipper.com>
  */
 
-const http = require('http')
+const webserver = require('./webserver')
 const io = require('socket.io')
 const winston = require('winston')
 const socketioJwt = require('socketio-jwt')
 
 let listening = false
-const server = http.createServer((req, res) => {
-  res.writeHead(403, { 'Content-Type': 'text/html' })
-  res.end()
-})
+
+// Start webserver, the env determines if it's a dev or prod server
+let server = webserver()
+
+// Start socket connection over webserver
 const socket = io.listen(server)
 
 // Firstly authenticate the client, afterwards create a data object to store user data
