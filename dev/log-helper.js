@@ -8,26 +8,44 @@ window.app = (function () {
   'use strict'
 
   /**
-   * @var DOMNode
+   * @type {DOMNode}
    */
   let logNode
+
+  /**
+   * Four lines on default font size.
+   * @type {Number}
+   */
+  const fourLines = 16 * 4
+
+  /**
+   * Max number of lines in the log. Oldest are removed
+   * @type {Number}
+   */
+  const maxLogLines = 200
+
+  /**
+   * Gives a timeout for auto cleaning old entries
+   * @type {Timeout}
+   */
+  let cleanTimeout = null
 
   /**
    * Adds a zero to make sure the character is 2 characters wide.
    * 12 -> 12
    * 3 -> 03
    *
-   * @param  {number} val
-   * @return {string}
+   * @param  {Number} val
+   * @return {String}
    */
-  let zeroFill = function (val) {
+  let zeroFill = (val) => {
     return val < 10 ? `0${val}` : val
   }
 
   /**
    * Constructs a timestamp
    *
-   * @return {string}
+   * @return {String}
    */
   let buildDate = () => {
     let now = new Date()
@@ -57,6 +75,40 @@ window.app = (function () {
       args.push(`[name="${name.value}"]`)
     }
     return `[${args.join('')}]`
+  }
+
+  /**
+   * Removes excess log entries
+   */
+  let autoClean = () => {
+    while (logNode.childNodes.length > maxLogLines) {
+      logNode.removeChild(logNode.firstChild)
+    }
+  }
+
+  /**
+   * Debounces the cleaning up of the log until it's quiet.
+   */
+  let listUpdated = () => {
+    if (cleanTimeout !== null) {
+      clearTimeout(cleanTimeout)
+    }
+    cleanTimeout = setTimeout(autoClean, 500)
+  }
+
+  /**
+   * Scrolls to the end of the log if the user isn't more than 4 lines away
+   * from the bottom.
+   */
+  let scrollToEnd = () => {
+    let logScrollHeight = logNode.scrollHeight
+    let logElemHeight = logNode.offsetHeight
+    let logScrollPos = logNode.scrollTop
+    let dist = logScrollHeight - (logScrollPos + logElemHeight)
+
+    if (dist < fourLines) {
+      logNode.scrollTop = logNode.scrollHeight
+    }
   }
 
   /**
@@ -127,6 +179,12 @@ window.app = (function () {
       itembox.appendChild(node)
     })
     logNode.appendChild(container)
+
+    // Scroll to bottem if we're at the bottom
+    scrollToEnd()
+
+    // Flush old entries after a timeout
+    listUpdated()
   }
 
   // data-target="log-clear"
