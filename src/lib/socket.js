@@ -9,7 +9,7 @@ const webserver = require('./webserver')
 const io = require('socket.io')
 const winston = require('winston')
 const socketioJwt = require('socketio-jwt')
-const routeController = require('../conroller/routecontroller')
+const routeController = require('../lib/routecontroller')
 
 let listening = false
 
@@ -28,6 +28,7 @@ socket.on('connection', socketioJwt.authorize({
 // Let RouteController listen on the socket connection too.
 routeController.linkSocket(socket)
 
+// Export connection
 exports.connection = socket
 
 // Expose boot method.

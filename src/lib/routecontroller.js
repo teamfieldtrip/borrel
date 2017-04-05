@@ -8,7 +8,8 @@
 
 // Requirements for controller
 const lodash = require('lodash')
-const {states, Route} = require('../lib/route')
+const Route = require('../lib/route').route
+const states = require('../lib/route').states
 
 // Requirements for routes
 const auth = require('../handler/auth')
@@ -92,7 +93,7 @@ class RouteController {
 }
 
 // Create non-changing instance :D
-const router = new RouteController()
+let router = new RouteController()
 
 // Register all routes
 router
@@ -102,6 +103,8 @@ router
   // Player sessions
   .addRoute('player:create', player.create, states.auth)
   .addRoute('player:resume', player.resume, states.auth)
+
+console.log(router)
 
 // Export router
 module.export = router
