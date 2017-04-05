@@ -77,6 +77,15 @@ module.exports = function (sequelize, DataTypes) {
         Player.belongsTo(models.account, {foreignKey: 'account'})
         // A player also has an account
         Player.hasMany(models.inventorItem, {foreignKey: 'player'})
+        // Find games the player takes part in
+        Player.hasMany(models.game, {
+          through: {
+            model: models.gamePlayer,
+            unique: false
+          },
+          foreignKey: 'player',
+          constraints: false
+        })
       }
     }
   })
