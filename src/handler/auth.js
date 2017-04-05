@@ -3,11 +3,8 @@
  *
  * @author Remco Schipper <github@remcoschipper.com>
  */
-const EventEmitter = require('events').EventEmitter
 const jwt = require('jsonwebtoken')
 const database = require('../lib/database')
-const socket = require('../lib/socket')
-const events = new EventEmitter()
 
 const login = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
@@ -44,22 +41,7 @@ const login = function (data, callback) {
 }
 
 /**
- * Export an event end-point
- * @type {EventEmitter}
+ * Exports the methods we want to provide
+ * @type {Object}
  */
-exports.events = events
-
-/**
- * Attach events to the socket
- * @param callback
- * @returns {*}
- */
-exports.boot = function (callback) {
-  socket.connection.on('connection', (client) => {
-    client.on('auth:login', login)
-  })
-  socket.connection.on('authenticated', (client) => {
-    client.removeListener('auth:login', login)
-  })
-  return callback(null)
-}
+module.exports = {login}
