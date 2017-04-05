@@ -14,7 +14,7 @@ const server = http.createServer((req, res) => {
   res.writeHead(403, { 'Content-Type': 'text/html' })
   res.end()
 })
-const socket = io.listen(server);
+const socket = io.listen(server)
 socket.on('connection', socketioJwt.authorize({
   secret: process.env.JWT_SECRET,
   required: false
