@@ -27,6 +27,7 @@
     "bcrypt": "1.0.2",
     "dotenv": "4.0.0",
     "file-exists": "3.0.2",
+    "finalhandler": "1.0.1",
     "foreman": "2.0.0",
     "jsonwebtoken": "7.3.0",
     "lodash": "4.17.4",
