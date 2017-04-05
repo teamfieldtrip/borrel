@@ -9,6 +9,7 @@ const webserver = require('./webserver')
 const io = require('socket.io')
 const winston = require('winston')
 const socketioJwt = require('socketio-jwt')
+const routeController = require('../conroller/routecontroller')
 
 let listening = false
 
@@ -22,9 +23,10 @@ const socket = io.listen(server)
 socket.on('connection', socketioJwt.authorize({
   secret: process.env.JWT_SECRET,
   required: false
-})).on('authenticated', (client) => {
-  client.data = {}
-})
+}))
+
+// Let RouteController listen on the socket connection too.
+routeController.linkSocket(socket)
 
 exports.connection = socket
 

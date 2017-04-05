@@ -22,6 +22,16 @@ const player = require('../handler/player')
 class RouteController {
   constructor (socket) {
     this.routes = {}
+  }
+
+  /**
+   * Links a socket to this RouteController
+   *
+   * @param  {io.Server} socket
+   */
+  linkSocket (socket) {
+    if (typeof socket !== 'object') throw new Error('Invalid socket!')
+
     socket.on('connect', this.connectClient.bind(this))
   }
 
