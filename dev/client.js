@@ -17,9 +17,10 @@
   let socket = null
   let statusIndicators = {
     socket: null,
+    token: null,
+    account: null,
     player: null,
-    game: null,
-    room: null
+    game: null
   }
 
   let log = function () {
@@ -47,7 +48,14 @@
    * @return {DOMNode}
    */
   let findStatusIndicator = (selector) => {
-    return document.querySelector(`[data-status-for="${selector}"]`)
+    let node = document.querySelector(`[data-status-for="${selector}"]`)
+    if (node) {
+      let text = document.createElement('span')
+      text.classList.add('text-muted')
+      text.textContent = '[unknown]'
+      node.appendChild(text)
+    }
+    return node
   }
 
   /**
@@ -199,9 +207,10 @@
 
     // Bind status indicators
     statusIndicators.socket = findStatusIndicator('socket-status')
+    statusIndicators.token = findStatusIndicator('jwt')
+    statusIndicators.account = findStatusIndicator('account-id')
     statusIndicators.player = findStatusIndicator('player-id')
     statusIndicators.game = findStatusIndicator('game-id')
-    statusIndicators.room = findStatusIndicator('room-id')
 
     // Bind actions
     bindForms()
