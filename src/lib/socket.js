@@ -8,13 +8,22 @@
 const http = require('http')
 const io = require('socket.io')
 const winston = require('winston')
+const socketioJwt = require('socketio-jwt')
 
 const server = http.createServer((req, res) => {
   res.writeHead(403, { 'Content-Type': 'text/html' })
   res.end()
 })
+const socket = io.listen(server)
+// Firstly authenticate the client, afterwards create a data object to store user data
+socket.on('connection', socketioJwt.authorize({
+  secret: process.env.JWT_SECRET,
+  required: false
+})).on('authenticated', (client) => {
+  client.data = {}
+})
 
-exports.connection = io.listen(server)
+exports.connection = socket
 exports.boot = function (callback) {
   let onListening = () => {
     server.removeListener('error', onError)
