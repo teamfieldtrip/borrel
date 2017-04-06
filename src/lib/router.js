@@ -101,8 +101,8 @@ router
   .addRoute('auth:login', auth.login, states.guest)
   .addRoute('auth:register', auth.register, states.guest)
   // Player sessions
-  .addRoute('player:create', player.create, states.user)
-  .addRoute('player:resume', player.resume, states.user)
+  .addRoute('player:create', player.create, states.all)
+  .addRoute('player:resume', player.resume, states.all)
 
 // Export router
 module.exports = router
