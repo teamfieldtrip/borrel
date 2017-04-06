@@ -18,4 +18,4 @@ class Route {
   }
 }
 
-module.exports = Route;
+module.exports = Route
