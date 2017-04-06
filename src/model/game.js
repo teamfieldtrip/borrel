@@ -75,14 +75,7 @@ module.exports = function (sequelize, DataTypes) {
         // A game always has a host
         Game.belongsTo(models.account, {foreignKey: 'host'})
         // A game also has players, which includes the host (as a player)
-        Game.hasMany(models.player, {
-          through: {
-            model: models.gamePlayer,
-            unique: false
-          },
-          foreignKey: 'game',
-          constraints: false
-        })
+        Game.hasMany(models.player, {foreignKey: 'game'})
       }
     }
   })
