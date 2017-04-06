@@ -2,6 +2,9 @@
 /* global io */
 /**
  * Handles connecting to the socket and supporting features
+ *
+ * @author Roelof Roos <github@roelof.io>
+ * @author Remco Schipper <github@remcoschipper.com>
  */
 
 (function ($) {
@@ -34,8 +37,9 @@
    * @return {mixed} the value, or fallback
    */
   let getConfig = (key, fallback) => {
-    if (document.documentElement.dataset[key]) {
-      return document.documentElement.dataset[key]
+    let bodyElement = document.querySelector('body')
+    if (bodyElement.dataset[key]) {
+      return bodyElement.dataset[key]
     } else {
       return fallback || null
     }

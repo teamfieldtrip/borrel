@@ -2,22 +2,9 @@
  * Utility models for the router
  *
  * @author Roelof Roos <gitub@roelof.io>
+ * @author Remco Schipper <gitub@remcoschipper.com>
  */
-
-const lodash = require('lodash')
-
-/**
- * Various user states.
- * @type {Object}
- */
-const states = {
-  guest: 1,
-  user: 2,
-  lobby: 4,
-  game: 8
-}
-states.all = lodash.sum(lodash.values(states))
-states.auth = states.all & ~states.guest
+const states = require('../constant/state')
 
 /**
  * Describes a simple route with a name, function and required user state
@@ -31,7 +18,4 @@ class Route {
   }
 }
 
-module.exports = {
-  route: Route,
-  states: states
-}
+module.exports = Route;

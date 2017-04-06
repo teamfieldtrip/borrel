@@ -9,6 +9,10 @@ const database = require('../lib/database')
 const login = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
+  // Check if the data is an object, otherwise we cannot use the values
+  if (typeof data !== 'object') {
+    return callback('Wrong email/password')
+  }
   // Keep a short reference to the models
   const models = database.connection.models
   models.account.findOne({ where: { email: data.email } }).then((account) => {

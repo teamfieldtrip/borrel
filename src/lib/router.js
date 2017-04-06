@@ -8,8 +8,8 @@
 
 // Requirements for controller
 const lodash = require('lodash')
-const Route = require('../lib/route').route
-const states = require('../lib/route').states
+const Route = require('../model/route')
+const states = require('../constant/state')
 
 // Requirements for routes
 const auth = require('../handler/auth')
@@ -20,8 +20,8 @@ const player = require('../handler/player')
  *
  * @type {Object}
  */
-class RouteController {
-  constructor (socket) {
+class Router {
+  constructor () {
     this.routes = {}
   }
 
@@ -60,13 +60,13 @@ class RouteController {
    * @param  {Object} data
    * @param  {Function} callback
    */
-  handeRoute (route, client, data, callback = null) {
+  handleRoute (route, client, data, callback = null) {
     // Callback must be a function, or shit will go wrong.
     callback = (typeof callback === 'function') ? callback : () => {}
 
     // Make sure the current scope is sufficient
     if (this.canUse(route.name, client)) {
-      route.fn.apply(client, data, callback)
+      route.func.call(client, data, callback)
     } else {
       callback('Not authorized')
     }
@@ -88,12 +88,12 @@ class RouteController {
 
   canUse (name, client) {
     let route = name instanceof Route ? name : this.routes[name]
-    return (route.scope & client.data.state !== 0)
+    return (route.state & client.data.state !== 0)
   }
 }
 
 // Create non-changing instance :D
-let router = new RouteController()
+let router = new Router()
 
 // Register all routes
 router
@@ -101,10 +101,8 @@ router
   .addRoute('auth:login', auth.login, states.guest)
   .addRoute('auth:register', auth.register, states.guest)
   // Player sessions
-  .addRoute('player:create', player.create, states.auth)
-  .addRoute('player:resume', player.resume, states.auth)
-
-console.log(router)
+  .addRoute('player:create', player.create, states.user)
+  .addRoute('player:resume', player.resume, states.user)
 
 // Export router
-module.export = router
+module.exports = router
