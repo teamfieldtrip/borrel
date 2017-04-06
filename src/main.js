@@ -12,8 +12,6 @@ const winston = require('winston')
 const database = require('./lib/database')
 const socket = require('./lib/socket')
 
-const auth = require('./handler/auth')
-const player = require('./handler/player')
 const gps = require('./handler/gps')
 
 // Powered by http://trumpipsum.net/
@@ -23,8 +21,6 @@ winston.log('I know words. I have the best words.')
 const mainMethods = [
   database.boot,
   socket.boot,
-  auth.boot,
-  player.boot,
   gps.boot
 ]
 

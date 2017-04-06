@@ -9,6 +9,7 @@ const webserver = require('./webserver')
 const io = require('socket.io')
 const winston = require('winston')
 const socketioJwt = require('socketio-jwt')
+const router = require('./router')
 
 let listening = false
 
@@ -22,10 +23,12 @@ const socket = io.listen(server)
 socket.on('connection', socketioJwt.authorize({
   secret: process.env.JWT_SECRET,
   required: false
-})).on('authenticated', (client) => {
-  client.data = {}
-})
+}))
 
+// Let the router listen on the socket connection too.
+router.linkSocket(socket)
+
+// Export connection
 exports.connection = socket
 
 // Expose boot method.

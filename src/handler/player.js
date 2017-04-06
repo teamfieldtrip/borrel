@@ -6,7 +6,6 @@
 const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
 const lodash = require('lodash')
-const socket = require('../lib/socket')
 const database = require('../lib/database')
 
 const events = new EventEmitter()
@@ -59,21 +58,4 @@ const resume = function (data, callback) {
   })
 }
 
-/**
- * Export an event end-point
- * @type {EventEmitter}
- */
-exports.events = events
-
-/**
- * Attach events to the socket
- * @param callback
- * @returns {*}
- */
-exports.boot = function (callback) {
-  socket.connection.on('authenticated', (client) => {
-    client.on('player:create', create)
-    client.on('player:resume', resume)
-  })
-  return callback(null)
-}
+module.exports = {events, create, resume}
