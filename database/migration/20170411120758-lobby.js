@@ -8,6 +8,11 @@ module.exports = {
         allowNull: false,
         primaryKey: true
       },
+      public: {
+        type: Sequelize.BOOLEAN,
+        allowNull: true,
+        defaultValue: false
+      },
       createdAt: {
         type: Sequelize.DATE,
         allowNull: false,

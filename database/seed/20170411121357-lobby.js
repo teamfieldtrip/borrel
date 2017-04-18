@@ -12,16 +12,20 @@ module.exports = {
     // Build the data
     let data = [
       {
-        id: uuids.pop()
+        id: uuids.pop(),
+        public: false
       },
       {
-        id: uuids.pop()
+        id: uuids.pop(),
+        public: true
       },
       {
-        id: uuids.pop()
+        id: uuids.pop(),
+        public: false
       },
       {
-        id: uuids.pop()
+        id: uuids.pop(),
+        public: true
       }
     ]
 

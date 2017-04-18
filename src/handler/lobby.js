@@ -4,7 +4,7 @@
  * @author Sven Boekelder
  */
 
-const EventEmitter = require('event').EventEmitter
+const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
 const lodash = require('lodash')
 const database = require('../lib/database')
@@ -60,6 +60,16 @@ const resume = function (data, callback) {
     winston.error('Lobby resume error: %s', error)
     return callback('Could not find the lobby instance')
   })
+}
+
+/**
+ * Lists the available lobbies
+ */
+
+const list = function (callback) {
+  // Temporary test array
+  this.emit('bla',"TEST")
+  return callback("TESTSTRING")
 }
 
 module.exports = {events, create, resume}

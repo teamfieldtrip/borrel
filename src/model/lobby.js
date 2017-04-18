@@ -12,9 +12,14 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       validate: {
-        noteEmpty: true,
+        notEmpty: true,
         isUUID: 4
       }
+    },
+    public: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      primaryKey: false
     }
     // TODO Settings
   }, {
