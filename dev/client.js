@@ -29,6 +29,24 @@
   let log = function () {
     window.app.log.apply(this, arguments)
   }
+
+  /**
+   * Sends an action and logs both egress and ingress data.
+   *
+   * @param  {string} action Action to perform
+   * @param  {object} data   Data to send along
+   */
+  let sendAction = (action, data) => {
+    log('Emitting', action, 'with', data)
+    socket.emit(action, data, function () {
+      let data = []
+      for (var i = 0; i < arguments.length; i++) {
+        data.push(arguments[i])
+      }
+      log('Response for', action, '=>', data)
+    })
+  }
+
   /**
    * Returns a config entry from the <body> tag.
    *
@@ -84,8 +102,7 @@
 
     if (socket) {
       let action = node.dataset['socketAction']
-      log('Emitting', action, 'with', data)
-      socket.emit(action, data)
+      sendAction(action, data)
     } else {
       log('ERROR! Not connected to socket!')
     }
@@ -109,8 +126,7 @@
       timestamp: new Date()
     }
 
-    socket.emit('poll', pollData)
-    log(pollData)
+    sendAction('poll', pollData)
   }
 
   /**
