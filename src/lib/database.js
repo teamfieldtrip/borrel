@@ -14,7 +14,8 @@ const winston = require('winston')
  */
 const models = [
   require('../model/account'),
-  require('../model/player')
+  require('../model/player'),
+  require('../model/lobby')
 ]
 
 /**

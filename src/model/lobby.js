@@ -2,6 +2,7 @@
  * Lobby model
  *
  * @author Sven Boekelder
+ * @author Remco Schipper
  */
 
 module.exports = function (sequelize, DataTypes) {
@@ -12,9 +13,45 @@ module.exports = function (sequelize, DataTypes) {
       defaultValue: DataTypes.UUIDV4,
       primaryKey: true,
       validate: {
-        noteEmpty: true,
+        notEmpty: true,
         isUUID: 4
       }
+    },
+    duration: {
+      type: DataTypes.INTEGER(3),
+      allowNull: false
+    },
+    amountOfPlayers: {
+      type: DataTypes.INTEGER(2),
+      allowNull: false
+    },
+    amountOfRounds: {
+      type: DataTypes.INTEGER(2),
+      allowNull: false
+    },
+    amountOfLifes: {
+      type: DataTypes.INTEGER(2),
+      allowNull: false
+    },
+    powerUpsEnabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false
+    },
+    centerLatitude: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    centerLongitude: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    borderLatitude: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
+    borderLongitude: {
+      type: DataTypes.STRING,
+      allowNull: false
     }
     // TODO Settings
   }, {

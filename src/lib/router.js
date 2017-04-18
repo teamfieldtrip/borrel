@@ -14,6 +14,7 @@ const states = require('../constant/state')
 // Requirements for routes
 const auth = require('../handler/auth')
 const player = require('../handler/player')
+const lobby = require('../handler/lobby')
 
 /**
  * A router handler, has some utility funtions
@@ -103,6 +104,8 @@ router
   // Player sessions
   .addRoute('player:create', player.create, states.all)
   .addRoute('player:resume', player.resume, states.all)
+  // Lobby
+  .addRoute('lobby:create', lobby.create, states.all)
 
 // Export router
 module.exports = router
