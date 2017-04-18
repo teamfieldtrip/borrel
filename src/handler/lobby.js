@@ -2,6 +2,7 @@
  * Handles the lobby creation
  *
  * @author Sven Boekelder
+ * @author Remco Schipper
  */
 
 const EventEmitter = require('events').EventEmitter
