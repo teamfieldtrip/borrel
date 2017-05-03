@@ -42,8 +42,6 @@ const create = function (data, callback) {
  * success/failure
  */
 const resume = function (data, callback) {
-  // Check if the callback is set, otherwise the call will cause an error
-  callback = (typeof callback === 'function') ? callback : function () {}
   // Get the lobby instance by id
   database.connection.models.lobby.findById(data.id).then((lobby) => {
     // Check if lobby exists
@@ -62,17 +60,8 @@ const resume = function (data, callback) {
   })
 }
 
-/**
- * Lists the available lobbies
- * @param [callback] Will return list of lobbies
- */
-const list = function (callback) {
-  // Check if the callback is set, otherwise the call will cause an error
-  callback = (typeof callback === 'function') ? callback : function () {}
-  // Get the list of lobbies from the database
-  database.connection.models.lobby.findAll().then((lobbies) => {
-    return callback(lobbies)
-  })
+const players = function (callback){
+  return callback(lobby.players)
 }
 
 module.exports = {events, create, resume, list}
