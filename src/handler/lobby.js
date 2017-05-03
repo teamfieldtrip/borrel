@@ -60,8 +60,10 @@ const resume = function (data, callback) {
   })
 }
 
-const players = function (callback){
-  return callback(lobby.players)
+const players = function (data, callback) {
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    return callback(lobby.players)
+  })
 }
 
-module.exports = {events, create, resume, list}
+module.exports = {events, create, resume, players}
