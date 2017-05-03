@@ -10,6 +10,7 @@ const root = require('app-root-path')
 
 const finalhandler = require('finalhandler')
 const http = require('http')
+const https = require('https')
 const winston = require('winston')
 
 const Router = require('router')
@@ -17,6 +18,68 @@ const Twig = require('twig')
 
 let assetPath = (name) => {
   return path.join(String(root), 'dev', name)
+}
+
+/**
+ * Checks if a file is readable by this application.
+ *
+ * @param  {String} file Path of the file
+ * @return {boolean} True if readable.
+ */
+const fileAccessible = (file) => {
+  if (typeof file !== 'string') return false
+  if (file.trim().length === 0) return false
+
+  try {
+    fs.access(file, fs.constants.R_OK)
+    return true
+  } catch (e) {
+    return false
+  }
+}
+
+/**
+ * Returns true if the TLS protocol is to be used.
+ *
+ * @return {Boolean}
+ */
+const enableTlsProtocol = () => {
+  if (process.env.SOCKET_TLS_ENABLED) {
+    return process.env.SOCKET_TLS_ENABLED
+  }
+
+  let cert = process.env.SOCKET_TLS_CERT
+  let key = process.env.SOCKET_TLS_KEY
+
+  process.env.SOCKET_TLS_ENABLED = false
+
+  if (fileAccessible(cert) && fileAccessible(key)) {
+    process.env.SOCKET_TLS_ENABLED = true
+  } else {
+    process.env.SOCKET_TLS_ENABLED = false
+  }
+  return process.env.SOCKET_TLS_ENABLED
+}
+
+/**
+ * Returns an HTTP server, optionally with TLS support.
+ *
+ * @param  {Function} callback Forwarded to the createServer as callback
+ * @return {http.Server}
+ */
+const getHttpServer = (callback) => {
+  if (!enableTlsProtocol()) {
+    return http.createServer(callback)
+  }
+  let key = process.env.SOCKET_TLS_KEY
+  let cert = process.env.SOCKET_TLS_CERT
+
+  let options = {
+    key: fs.readFileSync(key),
+    cert: fs.readFileSync(cert)
+  }
+
+  return https.createServer(options, callback)
 }
 
 /**
@@ -33,7 +96,8 @@ let returnTwig = (file, args) => {
   args.env = process.env
   args.server = {
     host: process.env.SOCKET_HOST || 'localhost',
-    port: process.env.SOCKET_PORT || 8080
+    port: process.env.SOCKET_PORT || 8080,
+    tls: enableTlsProtocol()
   }
 
   // Build file path
@@ -94,7 +158,7 @@ let buildDevServer = () => {
   router.get('/base.js', buildJsRender('log-helper.js'))
 
   // Return the server, linked to our handler
-  return http.createServer((req, res) => {
+  return getHttpServer((req, res) => {
     router(req, res, finalhandler(req, res))
   })
 }
@@ -105,7 +169,7 @@ let buildDevServer = () => {
  * @return {net.Server}
  */
 let buildProdServer = () => {
-  return http.createServer((req, res) => {
+  return getHttpServer((req, res) => {
     res.writeHead(403)
     res.end()
   })
