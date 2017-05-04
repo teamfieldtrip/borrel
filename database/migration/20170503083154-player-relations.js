@@ -4,8 +4,8 @@ module.exports = {
   up: function (queryInterface, Sequelize) {
     return Promise.all([
       queryInterface.addColumn('players', 'account', {
-        type: Sequelize.INTEGER,
-        allowNull: false
+        type: Sequelize.STRING,
+        allowNull: true
       }),
       queryInterface.addColumn('players', 'lobby', {
         type: Sequelize.INTEGER,
@@ -13,8 +13,8 @@ module.exports = {
         allowNull: true
       }),
       queryInterface.addColumn('players', 'host', {
-        type: Sequelize.INTEGER,
-        allowNull: false
+        type: Sequelize.STRING,
+        allowNull: true
       })
     ])
   },

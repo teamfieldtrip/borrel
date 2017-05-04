@@ -5,7 +5,7 @@ module.exports = {
     return Promise.all([
       queryInterface.addColumn('lobbies', 'host', {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: true
       }),
       queryInterface.addColumn('lobbies', 'duration', {
         type: Sequelize.INTEGER(3),
