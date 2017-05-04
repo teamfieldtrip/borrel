@@ -53,10 +53,12 @@ const enableTlsProtocol = () => {
 
   process.env.SOCKET_TLS_ENABLED = false
 
+  if (!cert || !key) {
+    return false
+  }
+
   if (fileAccessible(cert) && fileAccessible(key)) {
     process.env.SOCKET_TLS_ENABLED = true
-  } else {
-    process.env.SOCKET_TLS_ENABLED = false
   }
   return process.env.SOCKET_TLS_ENABLED
 }
