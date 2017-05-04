@@ -193,13 +193,16 @@
     // Provided by server
     let host = getConfig('socketHost', 'localhost')
     let port = getConfig('socketPort', 8080)
+    let tls = getConfig('socketTls', false)
+    let proto = tls ? 'wss' : 'ws'
+    let socketUrl = `${proto}://${host}:${port}`
 
     return new Promise((resolve, reject) => {
       // Log
-      log(`Constructing new connection to ${host}:${port}...`)
+      log(`Constructing new connection to ${socketUrl}...`)
 
       // Build socket URL
-      socket = io(`ws://${host}:${port}`)
+      socket = io(socketUrl)
 
       // Attach loggers early
       attachLoggers(socket)
