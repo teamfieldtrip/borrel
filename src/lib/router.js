@@ -106,6 +106,8 @@ router
   .addRoute('player:resume', player.resume, states.all)
   // Lobby
   .addRoute('lobby:create', lobby.create, states.all)
+  .addRoute('lobby:info', lobby.info, states.all)
+  .addRoute('lobby:join', lobby.join, states.all)
 
 // Export router
 module.exports = router

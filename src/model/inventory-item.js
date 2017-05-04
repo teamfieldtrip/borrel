@@ -35,9 +35,9 @@ module.exports = function (sequelize, DataTypes) {
       associate: function (models) {
         // NOTE models contains all models
         // An inventory item is game-bound, so it's connected to a player.
-        InventoryItem.belongsTo(models.player, {foreignKey: 'player'})
+        // InventoryItem.belongsTo(models.player, {foreignKey: 'player'})
         // A purchase is always linked to a StoreItem
-        InventoryItem.belongsTo(models.powerUp, {foreignKey: 'powerUp'})
+        // InventoryItem.belongsTo(models.powerUp, {foreignKey: 'powerUp'})
       }
     }
   })

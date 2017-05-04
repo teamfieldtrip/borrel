@@ -21,7 +21,7 @@ const create = function (data, callback) {
   // Build a new player instance
   database.connection.models.player.build(lodash.pick(data, [])).save().then((player) => {
     // Assign the player id to the socket
-    this.playerId = player.id
+    this.data.player = { id: player.id }
     // Emit the created event for other modules
     events.emit('created', player, this)
     // Let the client know it succeeded

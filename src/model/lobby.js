@@ -17,6 +17,10 @@ module.exports = function (sequelize, DataTypes) {
         isUUID: 4
       }
     },
+    host: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     duration: {
       type: DataTypes.INTEGER(3),
       allowNull: false
@@ -29,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER(2),
       allowNull: false
     },
-    amountOfLifes: {
+    amountOfLives: {
       type: DataTypes.INTEGER(2),
       allowNull: false
     },
@@ -62,7 +66,7 @@ module.exports = function (sequelize, DataTypes) {
     classMethods: {
       associate: function (models) {
         // The lobby always contains players
-        Lobby.hasMany(models.player, {foreignKey: 'lobby'})
+        Lobby.hasMany(models.player, {foreignKey: 'lobby', as: 'Players'})
         // The lobby always has one host
         Lobby.hasOne(models.player, {foreignKey: 'host'})
       }
