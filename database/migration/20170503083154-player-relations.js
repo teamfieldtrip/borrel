@@ -21,9 +21,8 @@ module.exports = {
 
   down: function (queryInterface, Sequelize) {
     return Promise.all([
-      queryInterface.removeColumn('players', 'account'),
-      queryInterface.removeColumn('players', 'lobby'),
-      queryInterface.removeColumn('players', 'host')
+      queryInterface.dropTable('players'),
+      require('./20170322155137-player').up(queryInterface, Sequelize)
     ])
   }
 }
