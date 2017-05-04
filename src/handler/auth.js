@@ -8,6 +8,27 @@ const database = require('../lib/database')
 const validator = require('validator')
 const winston = require('winston')
 
+/**
+ * Creates a new JSON web token, stores it and signs in the user.
+ *
+ * @param  {Account}  account  Account to sign in to
+ * @param  {Function} callback Callback to send the response in
+ */
+const loginUser = (account, callback) => {
+  // Generate a token
+  const token = jwt.sign({ id: account.id }, process.env.JWT_SECRET)
+
+  // Persist the token
+  account.update({
+    token: token
+  }).then(() => {
+    return callback(null, token)
+  }).catch((error) => {
+    winston.error(error)
+    return callback('Could not update the account instance')
+  })
+}
+
 const ERR_LOGIN = {
   generic: 'Wrong email/password',
   nomail: 'Please enter an e-mail address',
@@ -46,15 +67,8 @@ const login = function (data, callback) {
       if (!result) {
         return callback(ERR_LOGIN.generic)
       }
-      // Generate a token
-      const token = jwt.sign({ id: account.id }, process.env.JWT_SECRET)
-      // Persist the token
-      account.update({ token: token }).then(() => {
-        return callback(null, token)
-      }).catch((error) => {
-        console.log(error)
-        return callback('Could not update the account instance')
-      })
+
+      loginUser(account, callback)
     }).catch((error) => {
       console.log(error)
       return callback(ERR_LOGIN.generic)
