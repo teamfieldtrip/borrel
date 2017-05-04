@@ -5,25 +5,46 @@
  */
 const jwt = require('jsonwebtoken')
 const database = require('../lib/database')
+const validator = require('validator')
+const winston = require('winston')
+
+const ERR_LOGIN = {
+  generic: 'Wrong email/password',
+  nomail: 'Please enter an e-mail address',
+  nopass: 'Please enter a password'
+}
 
 const login = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
+
   // Check if the data is an object, otherwise we cannot use the values
   if (typeof data !== 'object') {
-    return callback('Wrong email/password')
+    return callback(ERR_LOGIN.generic)
   }
+
+  // Get a case-insensitive version of the email address
+  let email = (data.email || '').toString().trim().toLowerCase()
+  let password = (data.password || '').toString()
+
+  // Make sure both fields are filled in
+  if (email.length === 0 || !validator.isEmail(email)) {
+    return callback(ERR_LOGIN.nomail)
+  } else if (password.length === 0) {
+    return callback(ERR_LOGIN.missing)
+  }
+
   // Keep a short reference to the models
   const models = database.connection.models
-  models.account.findOne({ where: { email: data.email } }).then((account) => {
+  models.account.findOne({ where: { email: email } }).then((account) => {
     // Check if the account exists
     if (typeof account === 'undefined' || account === null) {
-      return callback('Wrong email/password')
+      return callback(ERR_LOGIN.generic)
     }
     // Check if the password matches
-    account.passwordMatches(data.password).then((result) => {
+    account.passwordMatches(password).then((result) => {
       if (!result) {
-        return callback('Wrong email/password')
+        return callback(ERR_LOGIN.generic)
       }
       // Generate a token
       const token = jwt.sign({ id: account.id }, process.env.JWT_SECRET)
@@ -36,11 +57,11 @@ const login = function (data, callback) {
       })
     }).catch((error) => {
       console.log(error)
-      return callback('Wrong email/password')
+      return callback(ERR_LOGIN.generic)
     })
   }).catch((error) => {
     console.log(error)
-    return callback('Wrong email/password')
+    return callback(ERR_LOGIN.generic)
   })
 }
 
