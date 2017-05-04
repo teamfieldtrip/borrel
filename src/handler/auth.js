@@ -79,8 +79,74 @@ const login = function (data, callback) {
   })
 }
 
+const REG_ERR = {
+  generic: 'Something went wrong, try again.',
+  nameEmpty: 'empty-name',
+  nameShort: 'short-name',
+  passEmpty: 'empty-pass',
+  passShort: 'short-pass',
+  mailEmpty: 'empty-mail',
+  mailInvalid: 'invalid-email',
+  mailTaken: 'taken-email'
+}
+
+let register = (data, callback) => {
+  // Check if the data is an object, otherwise we cannot use the values
+  if (typeof data !== 'object') {
+    return callback(REG_ERR.generic)
+  }
+
+  // Get variables
+  let name = (data.name || '').toString().trim()
+  let email = (data.email || '').toString().trim().toLowerCase()
+  let password = (data.password || '').toString()
+
+  // Validate submitted values.
+  if (name.length < 4) {
+    return callback(name.length === 0 ? REG_ERR.nameEmpty : REG_ERR.nameShort)
+  }
+  if (email.length === 0) {
+    return callback(REG_ERR.mailEmpty)
+  }
+  if (password.length < 4) {
+    return callback(password.length === 0 ? REG_ERR.passEmpty : REG_ERR.passShort)
+  }
+  if (!validator.isEmail(email)) {
+    return callback(REG_ERR.mailInvalid)
+  }
+
+  // Keep a short reference to the models
+  const models = database.connection.models
+
+  // Find an account with the given e-mail address
+  models.account.findOne({
+    where: {email: email}
+  }).then((result) => {
+    // If we find an account, abort
+    if (result !== null) {
+      return callback(REG_ERR.mailTaken)
+    }
+
+    // Create new user, and sign it in. The system sends a new JWT token.
+    models.account.build({
+      name: name,
+      email: email,
+      password: password
+    }).save().then((account) => {
+      loginUser(account, callback)
+    }, (err) => {
+      winston.error(err)
+      if (typeof err === 'object' && err.message) {
+        callback(err.message)
+      } else {
+        callback(err)
+      }
+    })
+  })
+}
+
 /**
  * Exports the methods we want to provide
  * @type {Object}
  */
-module.exports = {login}
+module.exports = {login, register}
