@@ -31,7 +31,10 @@ module.exports = function (sequelize, DataTypes) {
     // Password
     password: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      set: function (val) {
+        this.setDataValue('password', bcrypt.hashSync(val, 10))
+      }
     },
     // Account access token
     token: {
