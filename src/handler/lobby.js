@@ -18,8 +18,6 @@ const events = new EventEmitter()
  * success/failure
  */
 const create = function (data, callback) {
-  // Check if the callback is set, otherwise the call will cause an error
-  callback = (typeof callback === 'function') ? callback : function () {}
   // Build a new lobby instance
   database.connection.models.lobby.build(lodash.pick(data,
         [])).save().then((lobby) => {
@@ -60,10 +58,40 @@ const resume = function (data, callback) {
   })
 }
 
-const players = function (data, callback) {
-  database.connection.models.lobby.findById(data.id).then((lobby) => {
-    return callback(lobby.players)
+const addPlayer = function (data, callback) {
+  database.connection.models.player.findById(data.player.id).then((player) => {
+    // Check if player exists
+    if (typeof player === 'undefined' || player === null) {
+      return callback('Could not find the player instance')
+    }
+    database.connection.models.lobby.findById(data.lobby.id).then((lobby) => {
+      // Check if lobby exists
+      if (typeof lobby === 'undefined' || lobby === null) {
+        return callback('Could not find the lobby instance')
+      }
+      // Add player to lobby
+      player.belongsTo(lobby)
+    }
+    // Emit the resumed event for other modules
+    events.emit('addPlayer', player.id, this)
+    return callback(null)
+  }).catch((error) => {
+    winston.error('Player adding error: %s', error)
+    return callback('Could not join player')
   })
 }
 
-module.exports = {events, create, resume, players}
+const fetchPlayers = function (data, callback) {
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    // Check if lobby exists
+    if (typeof lobby === 'undefined' || lobby === null) {
+      return callback('Could not find the lobby instance')
+    }
+    return callback(null, lobby.id)
+  }).catch((error) => {
+    winston.error('Player retrieval error: %s', error)
+    return callback('Could not retrieve players')
+  })
+}
+
+module.exports = {events, create, resume, addPlayer, fetchPlayers}

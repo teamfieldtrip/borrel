@@ -17,7 +17,7 @@ module.exports = {
       defaultValue: 1,
       allowNull: false
     })
-    queryInterface.addColumn('lobbies', 'amountOfLifes', {
+    queryInterface.addColumn('lobbies', 'amountOfLives', {
       type: Sequelize.INTEGER(2),
       defaultValue: 1,
       allowNull: false
