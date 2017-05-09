@@ -111,6 +111,65 @@ window.app = (function () {
     }
   }
 
+  let createLogNode = (className, content) => {
+    let node = document.createElement('span')
+    node.classList.add('log-item')
+    if (className) {
+      node.classList.add(className)
+    }
+    node.textContent = content
+    return node
+  }
+
+  let convertObjectToLogNode = (item) => {
+    // Edge cases
+    let itemType = typeof item
+    if (item instanceof window.HTMLElement) {
+      itemType = 'HTMLElement'
+    } else if (item === null || item === undefined) {
+      itemType = item === null ? 'null' : 'undefined'
+    }
+
+    let node
+    // Switch all items
+    switch (itemType) {
+      case 'number':
+        node = createLogNode('text-warning', item)
+        break
+      case 'boolean':
+        node = createLogNode('text-primary', item ? 'true' : 'false')
+        break
+      case 'HTMLElement':
+        node = createLogNode('text-success', buildNodeName(item))
+        break
+      case 'object':
+        node = createLogNode('text-info', JSON.stringify(item))
+        break
+      case 'function':
+        node = createLogNode('text-success', `[Function ${item.name}]`)
+        break
+      case 'null':
+      case 'undefined':
+        node = createLogNode('text-muted', itemType)
+        break
+      default:
+        node = createLogNode(null, String(item))
+    }
+
+    return node
+  }
+
+  let convertArray = (array) => {
+    let nodeList = []
+    nodeList.push(createLogNode('text-info', '['))
+    array.forEach((node) => {
+      nodeList.push(convertObjectToLogNode(node))
+    })
+    nodeList.push(createLogNode('text-info', ']'))
+
+    return nodeList
+  }
+
   /**
    * Logs anything, sends it to the console and the on-screen log.
    */
@@ -134,50 +193,19 @@ window.app = (function () {
     container.appendChild(timestamp)
     container.appendChild(itembox)
 
+    let nodeList = []
     args.forEach((item) => {
-      let node = document.createElement('span')
-      node.classList.add('log-item')
-
-      // Edge cases
-      let itemType = typeof item
-      if (item instanceof window.HTMLElement) {
-        itemType = 'HTMLElement'
-      } else if (item === null || item === undefined) {
-        itemType = item === null ? 'null' : 'undefined'
+      if (Object.prototype.toString.call(item) === '[object Array]') {
+        nodeList = nodeList.concat(convertArray(item))
+      } else {
+        nodeList.push(convertObjectToLogNode(item))
       }
+    })
 
-      // Switch all items
-      switch (itemType) {
-        case 'number':
-          node.classList.add('text-warning')
-          break
-        case 'boolean':
-          node.textContent = item ? 'true' : 'false'
-          node.classList.add('text-primary')
-          break
-        case 'HTMLElement':
-          node.textContent = buildNodeName(item)
-          node.classList.add('text-success')
-          break
-        case 'object':
-          node.textContent = JSON.stringify(item)
-          node.classList.add('text-info')
-          break
-        case 'function':
-          node.textContent = `[Function ${item.name}]`
-          node.classList.add('text-success')
-          break
-        case 'null':
-        case 'default':
-          node.textContent = itemType
-          node.classList.add('text-success')
-          break
-        default:
-          node.textContent = String(item)
-      }
-
+    nodeList.forEach((node) => {
       itembox.appendChild(node)
     })
+
     logNode.appendChild(container)
 
     // Scroll to bottom if we're at the bottom

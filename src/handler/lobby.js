@@ -2,7 +2,6 @@
  * Handles the lobby creation
  *
  * @author Sven Boekelder
- * @author Remco Schipper
  */
 
 const EventEmitter = require('events').EventEmitter
@@ -40,22 +39,18 @@ const create = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
   // Build a new lobby instance
-  database.connection.models.lobby.build(lodash.pick(data, [
-    'duration', 'powerUpsEnabled',
-    'centerLatitude', 'centerLongitude',
-    'borderLatitude', 'borderLongitude',
-    'amountOfPlayers', 'amountOfRounds', 'amountOfLifes'
-  ])).save().then((lobby) => {
-    // Assign the lobby id to the socket
-    this.data.lobby = { id: lobby.id }
-    // Emit the created event for other modules
-    events.emit('created', lobby, this)
-    // Let the client know it succeeded
-    return callback(null, lobby.id)
-  }).catch((error) => {
-    winston.error('Lobby creation error: %s', error)
-    return callback('Could not create a lobby instance')
-  })
+  database.connection.models.lobby.build(lodash.pick(data,
+        [])).save().then((lobby) => {
+          // Assign the lobby id to the socket
+          this.lobbyId = lobby.id
+          // Emit the created event for other modules
+          events.emit('created', lobby, this)
+          // Let the client know it succeeded
+          return callback(null, lobby.id)
+        }).catch((error) => {
+          winston.error('Lobby creation error: %s', error)
+          return callback('Could not create a lobby instance')
+        })
 }
 
 const join = function (data, callback) {
@@ -130,8 +125,6 @@ const info = function (data, callback) {
  * success/failure
  */
 const resume = function (data, callback) {
-  // Check if the callback is set, otherwise the call will cause an error
-  callback = (typeof callback === 'function') ? callback : function () {}
   // Get the lobby instance by id
   database.connection.models.lobby.findById(data.id).then((lobby) => {
     // Check if lobby exists
@@ -139,7 +132,7 @@ const resume = function (data, callback) {
       return callback('Could not find the lobby instance')
     }
     // Assign the lobby ID  to the socket
-    this.data.lobby = { id: lobby.id }
+    this.lobbyId = lobby.id
     // Emit the resumed event for other modules
     events.emit('resumed', lobby, this)
     // Let the client know it succeeded
@@ -150,4 +143,10 @@ const resume = function (data, callback) {
   })
 }
 
-module.exports = {events, create, info, join, resume}
+const players = function (data, callback) {
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    return callback(lobby.players)
+  })
+}
+
+module.exports = {events, create, resume, info, join, players}

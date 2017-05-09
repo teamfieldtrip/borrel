@@ -21,6 +21,11 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     },
+    public: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+      primaryKey: false
+    },
     duration: {
       type: DataTypes.INTEGER(3),
       allowNull: false

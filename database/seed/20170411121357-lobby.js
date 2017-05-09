@@ -20,19 +20,23 @@ module.exports = {
     let data = [
       {
         id: uuids.pop(),
-        host: hostUuids.pop()
+        host: hostUuids.pop(),
+        public: false
+      },
+      {
+        id: uuids.pop(),
+        host: hostUuids.pop(),
+        public: false
+      },
+      {
+        id: uuids.pop(),
+        host: hostUuids.pop(),
+        public: true
       },
       {
         id: uuids.pop(),
         host: hostUuids.pop()
-      },
-      {
-        id: uuids.pop(),
-        host: hostUuids.pop()
-      },
-      {
-        id: uuids.pop(),
-        host: hostUuids.pop()
+        public: true
       }
     ]
 
