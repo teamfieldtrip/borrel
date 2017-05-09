@@ -74,9 +74,22 @@
           showForm(
             'auth:login',
             'Login',
-            'Enter a username and password',
+            'Enter an email and password',
             [
               ['email', 'Email'],
+              ['password', 'Password']
+            ]
+          )
+        }}
+        <!-- Sign Up -->
+        {{
+          showForm(
+            'auth:register',
+            'Register',
+            'Enter a name, email and password',
+            [
+              ['name', 'Name'],
+              ['email', 'E-mail'],
               ['password', 'Password']
             ]
           )
