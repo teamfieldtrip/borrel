@@ -35,7 +35,7 @@ module.exports = {
       },
       {
         id: uuids.pop(),
-        host: hostUuids.pop()
+        host: hostUuids.pop(),
         public: true
       }
     ]
