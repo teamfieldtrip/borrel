@@ -42,9 +42,11 @@ const create = function (data, callback) {
     'amountOfPlayers', 'amountOfRounds', 'amountOfLives',
     'centerLatitude', 'centerLongitude', 'borderLongitude', 'borderLatitude']
   // Build a new lobby instance
-  database.connection.models.lobby.build(lodash.pick(data, fields)).save().then((lobby) => {
+  const modelData = lodash.pick(data,fields)
+  modelData.host = this.data.player.id
+  database.connection.models.lobby.build(modelData).save().then((lobby) => {
     // Assign the lobby id to the socket
-    this.lobbyId = lobby.id
+    this.data.lobby = {id: lobby.id}
     // Emit the created event for other modules
     events.emit('created', lobby, this)
     // Let the client know it succeeded

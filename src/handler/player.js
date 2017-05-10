@@ -21,11 +21,11 @@ const create = function (data, callback) {
   callback = (typeof callback === 'function') ? callback : function () {}
 
   jwt.verify(data.account, process.env.JWT_SECRET, (err, decoded) => {
-    if (err !== null | typeof (err) !== 'undefined') {
+    if (err !== null) {
+      winston.error(err)
       return callback('Decoding fail')
     }
     if (decoded !== null | typeof (decoded) !== 'undefined') {
-      console.log(decoded.id) // bar
       // Build a new player instance
       database.connection.models.player.build(lodash.pick(data, [])).save().then((player) => {
         // Assign the player id to the socket
