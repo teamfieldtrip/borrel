@@ -33,7 +33,7 @@ module.exports = function (sequelize, DataTypes) {
     classMethods: {
       associate: function (models) {
         StoreEntry.hasMany(models.purchase, {foreignKey: 'item'})
-        StoreEntry.belongsTo(models.powerUp, {foreignKey: 'powerUp'})
+        // StoreEntry.belongsTo(models.powerUp, {foreignKey: 'powerUp'})
       }
     }
   })

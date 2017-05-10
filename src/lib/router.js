@@ -106,6 +106,8 @@ router
   .addRoute('player:resume', player.resume, states.all)
   // Lobby TODO authorization level
   .addRoute('lobby:create', lobby.create, states.all)
+  .addRoute('lobby:info', lobby.info, states.all)
+  .addRoute('lobby:join', lobby.join, states.all)
   .addRoute('lobby:list', lobby.list, states.all)
 
 // Export router
