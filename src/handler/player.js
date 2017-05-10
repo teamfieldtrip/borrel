@@ -39,9 +39,6 @@ const create = function (data, callback) {
         return callback('Could not create a player instance')
       })
     }
-  }).catch((error) => {
-    winston.error('Web token decoding error: %s', error)
-    return callback('Could not decode web token')
   })
 }
 /**
