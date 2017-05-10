@@ -19,7 +19,8 @@ const models = {
   inventoryItem: require('../model/inventory-item'),
   powerUp: require('../model/power-up'),
   purchase: require('../model/purchase'),
-  storeEntry: require('../model/store-entry')
+  storeEntry: require('../model/store-entry'),
+  game: require('../model/game')
 }
 
 /**
@@ -50,6 +51,7 @@ const load = function (connection, callback) {
 /**
  * Associates the models with each other (relations...)
  * @param {Sequelize} connection
+ * @param models
  * @param {function} callback
  */
 const associate = function (connection, models, callback) {
