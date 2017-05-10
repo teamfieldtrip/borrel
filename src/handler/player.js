@@ -21,20 +21,27 @@ const create = function (data, callback) {
   callback = (typeof callback === 'function') ? callback : function () {}
 
   jwt.verify(data.account, process.env.JWT_SECRET, (err, decoded) => {
-    console.log(decoded) // bar
-
-    // Build a new player instance
-    database.connection.models.player.build(lodash.pick(data, [])).save().then((player) => {
-      // Assign the player id to the socket
-      this.data.player = { id: player.id }
-      // Emit the created event for other modules
-      events.emit('created', player, this)
-      // Let the client know it succeeded
-      return callback(null, player.id)
-    }).catch((error) => {
-      winston.error('Player creation error: %s', error)
-      return callback('Could not create a player instance')
-    })
+    if (err !== null | typeof (err) !== 'undefined') {
+      return callback('Decoding fail')
+    }
+    if (decoded !== null | typeof (decoded) !== 'undefined') {
+      console.log(decoded.id) // bar
+      // Build a new player instance
+      database.connection.models.player.build(lodash.pick(data, [])).save().then((player) => {
+        // Assign the player id to the socket
+        this.data.player = { id: player.id }
+        // Emit the created event for other modules
+        events.emit('created', player, this)
+        // Let the client know it succeeded
+        return callback(null, player.id)
+      }).catch((error) => {
+        winston.error('Player creation error: %s', error)
+        return callback('Could not create a player instance')
+      })
+    }
+  }).catch((error) => {
+    winston.error('Web token decoding error: %s', error)
+    return callback('Could not decode web token')
   })
 }
 /**
