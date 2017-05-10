@@ -20,19 +20,21 @@ const events = new EventEmitter()
 const create = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
+  const fields = ['duration', 'powerUpsEnabled',
+    'amountOfPlayers', 'amountOfRounds', 'amountOfLives',
+    'centerLatitude', 'centerLongitude', 'borderLongitude', 'borderLatitude']
   // Build a new lobby instance
-  database.connection.models.lobby.build(lodash.pick(data,
-        [])).save().then((lobby) => {
-          // Assign the lobby id to the socket
-          this.lobbyId = lobby.id
-          // Emit the created event for other modules
-          events.emit('created', lobby, this)
-          // Let the client know it succeeded
-          return callback(null, lobby.id)
-        }).catch((error) => {
-          winston.error('Lobby creation error: %s', error)
-          return callback('Could not create a lobby instance')
-        })
+  database.connection.models.lobby.build(lodash.pick(data, fields)).save().then((lobby) => {
+    // Assign the lobby id to the socket
+    this.lobbyId = lobby.id
+    // Emit the created event for other modules
+    events.emit('created', lobby, this)
+    // Let the client know it succeeded
+    return callback(null, lobby.id)
+  }).catch((error) => {
+    winston.error('Lobby creation error: %s', error)
+    return callback('Could not create a lobby instance')
+  })
 }
 
 /**

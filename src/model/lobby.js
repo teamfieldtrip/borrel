@@ -34,7 +34,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER(2),
       allowNull: false
     },
-    amountOfLifes: {
+    amountOfLives: {
       type: DataTypes.INTEGER(2),
       allowNull: false
     },
