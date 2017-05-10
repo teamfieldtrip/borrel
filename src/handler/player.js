@@ -47,7 +47,7 @@ const resume = function (data, callback) {
       return callback('Could not find the player instance')
     }
     // Assign the player id to the socket
-    this.playerId = player.id
+    this.player = { id: player.id }
     // Emit the resumed event for other modules
     events.emit('resumed', player, this)
     // Let the client know it succeeded
