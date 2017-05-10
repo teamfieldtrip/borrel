@@ -1,0 +1,21 @@
+engines:
+  markdownlint:
+    enabled: true
+  eslint:
+    enabled: true
+    config:
+      config: .eslintrc-codeclimate.json
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+ratings:
+  paths:
+  - "src/**.js"
+  - "**.md"
+  - "**.inc"
+  - "**.js"
+  - "**.jsx"
+  exclude_paths:
+  - tests/

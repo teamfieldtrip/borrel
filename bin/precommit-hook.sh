@@ -47,7 +47,8 @@ NODE_BIN="${ROOT}/node_modules/.bin"
 if [ ! -d "${NODE_BIN}" ]
 then
     output red "Node directory missing at ${NODE_BIN}"
-    output red 'Please run `npm install`.'
+    output red 'Install dependencies via NPM:'
+    output red '> npm install'
     exit 1
 fi
 
@@ -71,8 +72,9 @@ function complete {
         output green "Everything is OK!"
     else
         output red "Something is wrong!"
-        output ""
-        output 'Expected behaviour? Run `git commit --no-verify`'
+        output ''
+        output 'Expected behaviour?'
+        output '> git commit --no-verify'
     fi
     # Restore stash
     if [ $CHANGE_COUNT -gt 0 ]

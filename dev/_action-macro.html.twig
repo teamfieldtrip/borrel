@@ -1,0 +1,36 @@
+{% macro renderField(name, label, action) %}
+{% set id = "#{action}-#{name}" %}
+<div class="form-group">
+  <!-- <label for="{{ id }}" class="col-2 col-form-label">{{ label }}</label> -->
+  <!-- <div class="col-10"> -->
+    <input
+      class="form-control"
+      type="text"
+      name="{{ name }}"
+      placeholder="{{ label|e('html_attr') }}"
+      id="{{ id }}">
+  <!-- </div> -->
+</div>
+{% endmacro %}
+
+{% macro showForm(action, title, desc, fields) %}
+{% from _self import renderField %}
+<form action="#" data-socket-action="{{ action }}" class="card">
+  <div class="card-block">
+    <h4 class="card-title">{{ title }}</h4>
+    <p class="card-text">{{ desc }}</p>
+    {% for field in fields %}
+      {{ renderField(field[0], field[1], action) }}
+    {% else %}
+    <div class="card">
+      <div class="card-block">
+        <p class="card-text text-center text-muted">No fields for this request</p>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+  <div class="card-footer text-right">
+    <input type="submit" value="{{ title }}" class="btn btn-primary">
+  </div>
+</form>
+{% endmacro %}

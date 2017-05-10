@@ -1,0 +1,33 @@
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+<style>
+  .container-main {
+    padding-top: 3.5rem;
+  }
+  .log-block {
+    display: flex;
+    flex-flow: row nowrap;
+  }
+  .log-block__time {
+    order: 1;
+    flex: 0 0 auto;
+    margin-right: 1rem;
+  }
+  .log-block__main {
+    order: 2;
+    flex: 0 1 auto;
+  }
+  .log-item + .log-item {
+    margin-left: 1rem;
+  }
+  .status-item__label {
+    font-weight: bold;
+  }
+  .status-item__label::after {
+    display: inline;
+    content: ": ";
+  }
+  .status-item__value {
+    padding-left: .6rem;
+  }
+</style>

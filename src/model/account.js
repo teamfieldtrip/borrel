@@ -4,6 +4,7 @@
  * @author Roelof Roos <github@roelof.io>
  * @author Remco Schipper <github@remcoschipper.com>
  */
+const bcrypt = require('bcrypt')
 
 module.exports = function (sequelize, DataTypes) {
   const Account = sequelize.define('account', {
@@ -22,8 +23,21 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING(96),
       allowNull: false
     },
+    // Email address
+    email: {
+      type: DataTypes.STRING(254),
+      allowNull: false
+    },
+    // Password
+    password: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      set: function (val) {
+        this.setDataValue('password', bcrypt.hashSync(val, 10))
+      }
+    },
     // Account access token
-    accessToken: {
+    token: {
       type: DataTypes.STRING,
       allowNull: true
     },
@@ -49,7 +63,7 @@ module.exports = function (sequelize, DataTypes) {
       }
     },
     // Account coint count
-    experience: {
+    experiencePoints: {
       type: DataTypes.INTEGER,
       defaultValue: 0,
       validate: {
@@ -62,11 +76,23 @@ module.exports = function (sequelize, DataTypes) {
     indexes: [
       {fields: ['id'], unique: true}
     ],
+    instanceMethods: {
+      passwordMatches: function (input) {
+        return new Promise((resolve, reject) => {
+          bcrypt.compare(input, this.getDataValue('password'), (error, result) => {
+            if (error) {
+              return reject(error)
+            }
+            return resolve(result)
+          })
+        })
+      }
+    },
     classMethods: {
       associate: function (models) {
         // NOTE models contains all models
-        Account.hasMany(models.player, {foreignKey: 'account'})
-        Account.hasMany(models.purchase, {foreignKey: 'account'})
+        Account.hasMany(models.player, {foreignKey: 'account', as: 'players'})
+        Account.hasMany(models.purchase, {foreignKey: 'account', as: 'purchases'})
       }
     }
   })
