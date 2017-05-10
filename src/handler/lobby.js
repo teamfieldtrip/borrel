@@ -42,7 +42,7 @@ const create = function (data, callback) {
     'amountOfPlayers', 'amountOfRounds', 'amountOfLives',
     'centerLatitude', 'centerLongitude', 'borderLongitude', 'borderLatitude']
   // Build a new lobby instance
-  const modelData = lodash.pick(data,fields)
+  const modelData = lodash.pick(data, fields)
   modelData.host = this.data.player.id
   database.connection.models.lobby.build(modelData).save().then((lobby) => {
     // Assign the lobby id to the socket
