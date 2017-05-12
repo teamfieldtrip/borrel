@@ -99,13 +99,16 @@
           showForm(
             'lobby:list',
             'List lobbies',
-            'Only public lobbies'
+            'Only public lobbies',
+            [
+              ['id', 'Id']
+            ]
           )
         }}
         <!-- Create lobby -->
         {{
           showForm(
-            'lobby:list',
+            'lobby:create',
             'Create lobby',
             'Create a lobby',
             [
@@ -118,7 +121,10 @@
           showForm(
             'gameplay:setTargets',
             'Set Targets',
-            'Set targets for the players'
+            'Set targets for the players',
+            [
+              ['lobbyId', 'Lobby id']
+            ]
           )
         }}
       </div>
