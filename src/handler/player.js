@@ -5,7 +5,6 @@
  */
 const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
-const lodash = require('lodash')
 const jwt = require('jsonwebtoken')
 const database = require('../lib/database')
 
@@ -27,7 +26,7 @@ const create = function (data, callback) {
     }
     if (decoded !== null | typeof (decoded) !== 'undefined') {
       // Build a new player instance
-      database.connection.models.player.build(lodash.pick(data, [])).save().then((player) => {
+      database.connection.models.player.build({ account: decoded.id }).save().then((player) => {
         // Assign the player id to the socket
         this.data.player = { id: player.id }
         // Emit the created event for other modules
