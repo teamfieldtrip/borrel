@@ -104,13 +104,13 @@ const join = function (data, callback) {
         getAccountByPlayerId(this.data.player.id).then((account) => {
           database.connection.models.player.update({ lobby: lobby.id, team: team }, { where: { id: this.data.player.id } }).then(() => {
             this.data.lobby = { id: lobby.id }
-            this.join('lobby-' + lobby.id)
 
             socket.connection.to('lobby-' + lobby.id).emit('lobby:joined', {
               player_id: this.data.player.id,
               team: team,
               name: account.name
             })
+            this.join('lobby-' + lobby.id)
 
             return callback(null)
           }).catch((error) => {
@@ -197,7 +197,7 @@ const list = function (data, callback) {
         return callback('error_lobby_not_found')
       }
 
-      getAccountsInLobby(lobby.id, lobby.host).then((players) => {
+      getAccountsInLobby(lobby.id).then((players) => {
         const data = lodash.map(players, (player) => {
           return {
             player_id: player.player_id,
@@ -225,9 +225,13 @@ const start = function (callback) {
         return callback('error_lobby_not_found')
       }
 
-      socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
+      if (lobby.host === this.data.player.id) {
+        socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
 
-      return callback(null)
+        return callback(null)
+      }
+
+      return callback('error_lobby_access_denied')
     }).catch((error) => {
       winston.error('Lobby find error: %s', error)
       return callback('error_lobby_data')
