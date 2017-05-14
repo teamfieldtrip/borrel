@@ -32,19 +32,19 @@ const setTargets = function (data, callback) {
 
     console.log(lobby.players)
 
-    lobby.players.forEach(player) => {
+    lobby.players.forEach((player) => {
       // If the player does not have a target, assign one from the target object
       if (player.target == null) {
-        lobby.Players.forEach(attempt) => {
+        lobby.Players.some((attempt) => {
           if (attempt.team !== player.team && targetCount.target <= 2) {
             player.target = attempt.id
             winston.log('Assigned %s', attempt.id)
             callback(attempt.id)
-            break
+            return true
           }
-        }
+        })
       }
-    }
+    })
   })
 }
 
@@ -52,7 +52,7 @@ const setTargets = function (data, callback) {
  * Validates a tagged person and hands out score if legitimate. Also clears the
  * current target, to pepare for setTargets.
  */
-const tag = function(data, callback) {
+const tag = function (data, callback) {
   database.connection.models.player.findById(data.playerId).then((player) => {
     if (typeof player === 'undefined' || player === null) {
       winston.error('Player not found')
@@ -60,7 +60,7 @@ const tag = function(data, callback) {
     }
 
     // Validate if the tagged person was the target
-    if (player.target == data.targetId) {
+    if (player.target === data.targetId) {
       // +1 the score and set the current target to null, to prepare for
       // setTargets
       player.score++
@@ -69,7 +69,7 @@ const tag = function(data, callback) {
       winston.log('Tagged person is not the target')
       return callback('error_tagged_not_target')
     }
-  }
+  })
 }
 
 module.exports = {events, setTargets, tag}
