@@ -104,6 +104,7 @@ router
   .addRoute('auth:register', auth.register, states.guest)
   // Gameplay
   .addRoute('gameplay:setTargets', gameplay.setTargets, states.all)
+  .addRoute('gameplay:tag', gameplay.tag, states.all)
   // Player sessions
   .addRoute('player:create', player.create, states.all)
   .addRoute('player:resume', player.resume, states.all)
