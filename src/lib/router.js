@@ -101,6 +101,7 @@ let router = new Router()
 router
   // Auth
   .addRoute('auth:login', auth.login, states.guest)
+  .addRoute('auth:logout', auth.logout, states.all)
   .addRoute('auth:register', auth.register, states.guest)
   // Gameplay
   .addRoute('gameplay:setTargets', gameplay.setTargets, states.all)

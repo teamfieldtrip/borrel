@@ -35,10 +35,10 @@ const ERR_LOGIN = {
   nopass: 'Please enter a password'
 }
 
-const logout = (data, callback) => {
+const logout = function (data, callback) {
   // Get account
-  database.connection.models.account.findOne({ where: {token: data.token }
-  }).then((account => {
+  database.connection.models.account.findOne({ where: { token: data.token }
+  }).then((account) => {
     account.update({
       token: null
     }).then((error) => {
