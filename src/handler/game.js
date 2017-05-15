@@ -144,11 +144,16 @@ const buildInformationData = (playerId, gameId) => {
  * went well a lobby-wide event is emitted.
  */
 const create = function (lobby, callback) {
-  if (!(lobby instanceof Lobby)) {
-    winston.error('Lobby is of invalid type!')
-    winston.log(lobby)
-    return callback('lobby_create_failed')
-  }
+/**
+ * Needs rewriting, lobby won't be an instance of Lobby, as it hasn't been made
+ * via a constructor of this class.
+ *
+ *   if (!(lobby instanceof Lobby)) {
+ *   winston.error('Lobby is of invalid type!')
+ *   winston.log(lobby)
+ *   return callback('lobby_create_failed')
+ * }
+ */
 
   // Get lobby ID
   let lobbyId = lobby.id
