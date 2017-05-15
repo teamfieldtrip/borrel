@@ -15,7 +15,7 @@ const database = require('../lib/database')
 const socket = require('../lib/socket')
 
 // Models
-const Lobby = require('../models/lobby')
+const Lobby = require('../model/lobby')
 // const Game = require('./game')
 
 // Helpers
