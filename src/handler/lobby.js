@@ -140,7 +140,9 @@ const leave = function (data, callback) {
       return callback('error_player_not_found')
     }
     player.lobby = null
-    return callback(null)
+    player.save({fields: ['lobby']}).then(() => {
+      callback(null)
+    })
   })
 }
 
