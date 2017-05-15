@@ -10,6 +10,7 @@ const winston = require('winston')
 const lodash = require('lodash')
 const database = require('../lib/database')
 const socket = require('../lib/socket')
+const game = require('./game')
 
 const events = new EventEmitter()
 
@@ -237,13 +238,11 @@ const start = function (callback) {
         return callback('error_lobby_not_found')
       }
 
-      if (lobby.host === this.data.player.id) {
-        socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
-
-        return callback(null)
+      if (lobby.host !== this.data.player.id) {
+        return callback('error_lobby_access_denied')
       }
 
-      return callback('error_lobby_access_denied')
+      game.create(lobby, callback)
     }).catch((error) => {
       winston.error('Lobby find error: %s', error)
       return callback('error_lobby_data')
