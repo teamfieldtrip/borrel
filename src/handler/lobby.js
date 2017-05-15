@@ -231,7 +231,7 @@ const addPlayer = function (data, callback) {
       }
       // Add player to lobby
       player.belongsTo(lobby)
-    }
+    })
     // Emit the resumed event for other modules
     events.emit('addPlayer', player.id, this)
     return callback(null)
@@ -254,7 +254,41 @@ const fetchPlayers = function (data, callback) {
   })
 }
 
+const start = function (callback) {
+  if (typeof this.data.lobby !== 'undefined') {
+    database.connection.models.lobby.findById(this.data.lobby.id).then((lobby) => {
+      if (typeof lobby === 'undefined' || lobby === null) {
+        return callback('error_lobby_not_found')
+      }
 
+      if (lobby.host === this.data.player.id) {
+        socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
+        return callback(null)
+      }
 
-module.exports = {events, create, resume, info, join, list, start, players}
+      return callback('error_lobby_access_denied')
+    }).catch((error) => {
+      winston.error('Lobby find error: %s', error)
+      return callback('error_lobby_data')
+    })
+  }
+}
 
+const players = function (data, callback) {
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    return callback(lobby.players)
+  })
+}
+
+module.exports = {
+  events,
+  create,
+  resume,
+  info,
+  join,
+  list,
+  start,
+  players,
+  fetchPlayers,
+  addPlayer
+}

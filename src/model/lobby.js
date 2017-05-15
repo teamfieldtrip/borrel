@@ -38,7 +38,7 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.INTEGER(2)
     },
     amountOfLives: {
-      type: DataTypes.INTEGER(2),
+      type: DataTypes.INTEGER(2)
     },
     powerUpsEnabled: {
       type: DataTypes.BOOLEAN,
