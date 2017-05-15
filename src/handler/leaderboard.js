@@ -8,16 +8,18 @@ const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
 const lodash = require('lodash')
 const database = require('../lib/database')
-const socket = require('../lib/socket')
 
 const events = new EventEmitter()
 
-const getLeaderboard = function (lobbyId) {
-  database.connection.models.player.findAll({ where: { lobby: lobbyId }
+const results = function (data, callback) {
+  database.connection.models.player.findAll({ where: { lobby: data.lobbyId }
   }).then((players) => {
-      return lodash.sortBy(players, 'score')
+    if (players === 'undefined' || players === null) {
+      winston.error('Playerlist not found')
+      return callback('error_no_players')
     }
-  }
+    return lodash.sortBy(players, 'score')
+  })
 }
 
-module.exports = {events, getLeaderboard}
+module.exports = {events, results}
