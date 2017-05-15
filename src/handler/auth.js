@@ -36,6 +36,7 @@ const ERR_LOGIN = {
 }
 
 const logout = function (data, callback) {
+  console.log("Logging out" + data.token)
   // Get account
   database.connection.models.account.findOne({ where: { token: data.token }
   }).then((account) => {
