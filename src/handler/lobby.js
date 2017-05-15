@@ -257,4 +257,19 @@ const players = function (data, callback) {
   })
 }
 
-module.exports = {events, create, resume, info, join, leave, list, start, players}
+const map = function (callback) {
+  if (typeof this.data.lobby !== 'undefined') {
+    database.connection.models.lobby.findById(this.data.lobby.id).then((lobby) => {
+      if (typeof lobby === 'undefined' || lobby === null) {
+        return callback('error_lobby_not_found')
+      }
+
+      return callback(null, lobby.centerLatitude, lobby.centerLongitude, lobby.borderLatitude, lobby.borderLongitude)
+    }).catch((error) => {
+      winston.error('Lobby find error: %s', error)
+      return callback('error_lobby_data')
+    })
+  }
+}
+
+module.exports = {events, create, resume, info, join, leave, list, start, map, players}
