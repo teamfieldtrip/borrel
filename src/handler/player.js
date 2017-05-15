@@ -67,4 +67,18 @@ const resume = function (data, callback) {
   })
 }
 
-module.exports = {events, create, resume}
+/**
+* Returns a player from the database, but only if it exists.
+ * @param  {string}  id ID of the Player.
+ * @return {Promise}    Result of the query, as a Promise.
+ */
+const get = function (id) {
+  return database.connection.models.player.findById(id).then((ply) => {
+    if (ply === null || ply === undefined) {
+      throw new Error('Player not found')
+    }
+    return ply
+  })
+}
+
+module.exports = {events, create, resume, get}
