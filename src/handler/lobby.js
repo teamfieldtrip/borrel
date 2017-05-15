@@ -190,6 +190,34 @@ const resume = function (data, callback) {
   })
 }
 
+const list = function (data, callback) {
+  if (typeof this.data.lobby !== 'undefined') {
+    database.connection.models.lobby.findById(this.data.lobby.id).then((lobby) => {
+      if (typeof lobby === 'undefined' || lobby === null) {
+        return callback('error_lobby_not_found')
+      }
+
+      getAccountsInLobby(lobby.id).then((players) => {
+        const data = lodash.map(players, (player) => {
+          return {
+            player_id: player.player_id,
+            name: player.name,
+            team: player.team
+          }
+        })
+
+        return callback(null, data)
+      }).catch((error) => {
+        winston.error('Could not find accounts in lobby: %s', error)
+        return callback('error_lobby_data')
+      })
+    }).catch((error) => {
+      winston.error('Lobby find error: %s', error)
+      return callback('error_lobby_data')
+    })
+  }
+}
+
 const addPlayer = function (data, callback) {
   database.connection.models.player.findById(data.player.id).then((player) => {
     // Check if player exists
@@ -225,6 +253,8 @@ const fetchPlayers = function (data, callback) {
     return callback('Could not retrieve players')
   })
 }
+
+
 
 module.exports = {events, create, resume, info, join, list, start, players}
 
