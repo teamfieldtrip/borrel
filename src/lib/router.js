@@ -113,8 +113,9 @@ router
   .addRoute('lobby:info', lobby.info, states.all)
   .addRoute('lobby:join', lobby.join, states.all)
   .addRoute('lobby:leave', lobby.leave, states.all)
-  .addRoute('lobby:list', lobby.players, states.all)
+  .addRoute('lobby:list', lobby.list, states.all)
   .addRoute('lobby:start', lobby.start, states.all)
+  .addRoute('lobby:map', lobby.map, states.all)
 
 // Export router
 module.exports = router
