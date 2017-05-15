@@ -141,6 +141,7 @@ const leave = function (data, callback) {
     }
     player.lobby = null
     return callback(null)
+  })
 }
 
 const info = function (data, callback) {
@@ -254,4 +255,4 @@ const players = function (data, callback) {
   })
 }
 
-module.exports = {events, create, resume, info, join, list, start, players}
+module.exports = {events, create, resume, info, join, leave, list, start, players}
