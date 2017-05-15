@@ -134,6 +134,18 @@ const join = function (data, callback) {
   }
 }
 
+const leave = function (data, callback) {
+  database.connection.models.lobby.findById(data.playerId).then((player) => {
+    if (typeof player === 'undefined' || player === null) {
+      return callback('error_player_not_found')
+    }
+    player.lobby = null
+    player.save({fields: ['lobby']}).then(() => {
+      callback(null)
+    })
+  })
+}
+
 const info = function (data, callback) {
   if (typeof this.data.lobby === 'undefined') {
     database.connection.models.lobby.findById(data.id).then((lobby) => {
@@ -245,4 +257,4 @@ const players = function (data, callback) {
   })
 }
 
-module.exports = {events, create, resume, info, join, list, start, players}
+module.exports = {events, create, resume, info, join, leave, list, start, players}

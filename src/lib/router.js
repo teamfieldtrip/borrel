@@ -112,6 +112,7 @@ router
   .addRoute('lobby:create', lobby.create, states.all)
   .addRoute('lobby:info', lobby.info, states.all)
   .addRoute('lobby:join', lobby.join, states.all)
+  .addRoute('lobby:leave', lobby.leave, states.all)
   .addRoute('lobby:list', lobby.players, states.all)
   .addRoute('lobby:start', lobby.start, states.all)
 
