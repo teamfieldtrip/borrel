@@ -38,9 +38,10 @@ const ERR_LOGIN = {
 const logout = (account, callback) => {
   account.update({
     token: null
-  }).then(() => {
+  }).then((error) => {
     winston.error(error)
     return callback('Could not logout the account instance')
+  })
 }
 
 const login = function (data, callback) {
