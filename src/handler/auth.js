@@ -41,12 +41,12 @@ const logout = function (data, callback) {
     account.update({
       token: null
     }).catch((error) => {
-        winston.error('Couldn\'t update token')
+        winston.error(error)
         callback('error_couldnt_update_token')
       })
     callback(null)
   }).catch((error) => {
-    winston.error('Couldn\'t find account')
+    winston.error(error)
     callback('error_couldnt_find_account')
   })
 }
