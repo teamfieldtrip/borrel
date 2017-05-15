@@ -8,7 +8,7 @@
 const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
 const lodash = require('lodash')
-const gpslib = require('gpslib')
+const geolib = require('geolib')
 
 // Handlers
 const database = require('../lib/database')
@@ -155,7 +155,7 @@ const create = function (lobby, callback) {
   let gameId = null
 
   // Determine radius
-  let radius = gpslib.getDistance(
+  let radius = geolib.getDistance(
     {latitude: lobby.centerLatitude, longitude: lobby.centerLongitude},
     {latitude: lobby.borderLatitude, longitude: lobby.borderLongitude},
     1 // distance in meters.
