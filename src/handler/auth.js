@@ -36,16 +36,15 @@ const ERR_LOGIN = {
 }
 
 const logout = function (data, callback) {
-  console.log("Logging out" + data.token)
-  // Get account
   database.connection.models.account.findOne({ where: { token: data.token }
   }).then((account) => {
     account.update({
       token: null
-    }).then((error) => {
-      winston.error(error)
-      return callback('Could not logout the account instance')
     })
+    callback(null)
+  }).catch((error) => {
+    winston.error('Cannot find account')
+    callback('error_cant_find_account')
   })
 }
 
