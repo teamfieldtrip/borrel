@@ -6,6 +6,7 @@
  * @author Roelof Roos <github@roelof.io>
  * @author Remco Schipper <github@remcoschipper.com>
  */
+
 const async = require('async')
 const winston = require('winston')
 

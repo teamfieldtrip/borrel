@@ -50,14 +50,9 @@ module.exports = {
   },
 
   down: function (queryInterface, Sequelize) {
-    queryInterface.removeColumn('lobbies', 'duration')
-    queryInterface.removeColumn('lobbies', 'amountOfPlayers')
-    queryInterface.removeColumn('lobbies', 'amountOfRounds')
-    queryInterface.removeColumn('lobbies', 'amountOfLifes')
-    queryInterface.removeColumn('lobbies', 'powerUpsEnabled')
-    queryInterface.removeColumn('lobbies', 'centerLatitude')
-    queryInterface.removeColumn('lobbies', 'centerLongitude')
-    queryInterface.removeColumn('lobbies', 'borderLatitude')
-    queryInterface.removeColumn('lobbies', 'borderLongitude')
+    return Promise.all([
+      queryInterface.dropTable('lobbies'),
+      require('./20170411120758-lobby').up(queryInterface, Sequelize)
+    ])
   }
 }

@@ -1,5 +1,6 @@
 {% set socket_host_safe = server.host|default('localhost')|e('html_attr') %}
 {% set socket_port_safe = server.port|default('8080')|e('html_attr') %}
+{% set socket_tls_safe = server.tls ? 'true' : 'false' %}
 {% from '_action-macro.html.twig' import showForm %}
 <!DOCTYPE html>
 <html>
@@ -11,7 +12,8 @@
   </head>
   <body
     data-socket-host="{{ socket_host_safe }}"
-    data-socket-port="{{ socket_port_safe }}">
+    data-socket-port="{{ socket_port_safe }}"
+    data-socket-tls="{{ socket_tls_safe }}">
     {% include 'nav.html.twig' %}
     <main class="container container-main">
       <h1>Socket connection tester</h1>
@@ -72,7 +74,7 @@
           showForm(
             'auth:login',
             'Login',
-            'Enter a username and password',
+            'Enter an email and password',
             [
               ['email', 'Email'],
               ['password', 'Password']
@@ -105,6 +107,16 @@
               ['centerLongitude', 'Center Long.'],
               ['borderLatitude', 'Border Lat.'],
               ['borderLongitude', 'Border Long.']
+            ]
+          )
+        }}
+        {{
+          showForm(
+            'gameplay:setTargets',
+            'Set Targets',
+            'Set targets for the players',
+            [
+              ['lobbyId', 'Lobby id']
             ]
           )
         }}

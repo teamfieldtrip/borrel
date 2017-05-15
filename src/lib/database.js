@@ -12,11 +12,16 @@ const winston = require('winston')
  * The models to load
  * @type {[Sequelize.Model]}
  */
-const models = [
-  require('../model/account'),
-  require('../model/player'),
-  require('../model/lobby')
-]
+const models = {
+  account: require('../model/account'),
+  player: require('../model/player'),
+  lobby: require('../model/lobby'),
+  inventoryItem: require('../model/inventory-item'),
+  powerUp: require('../model/power-up'),
+  purchase: require('../model/purchase'),
+  storeEntry: require('../model/store-entry'),
+  game: require('../model/game')
+}
 
 /**
  * Verifies the database credentials by connecting
@@ -37,22 +42,22 @@ const verify = function (connection, callback) {
  * @param {function} callback
  */
 const load = function (connection, callback) {
-  async.forEachOf(models, (item, key, callback) => {
-    item(connection, Sequelize)
-    return callback(null)
-  }, () => {
-    return callback(null, connection)
+  async.mapValuesSeries(models, (item, key, callback) => {
+    return callback(null, item(connection, Sequelize))
+  }, (error, results) => {
+    return callback(error, connection, results)
   })
 }
 /**
  * Associates the models with each other (relations...)
  * @param {Sequelize} connection
+ * @param models
  * @param {function} callback
  */
-const associate = function (connection, callback) {
+const associate = function (connection, models, callback) {
   async.forEachOf(models, (item, key, callback) => {
     if (typeof item.associate === 'function') {
-      item.associate(connection.models)
+      item.associate(models)
     }
     return callback(null)
   }, () => {

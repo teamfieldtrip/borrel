@@ -5,7 +5,7 @@
  */
 const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
-const lodash = require('lodash')
+const jwt = require('jsonwebtoken')
 const database = require('../lib/database')
 
 const events = new EventEmitter()
@@ -18,17 +18,26 @@ const events = new EventEmitter()
 const create = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
-  // Build a new player instance
-  database.connection.models.player.build(lodash.pick(data, [])).save().then((player) => {
-    // Assign the player id to the socket
-    this.playerId = player.id
-    // Emit the created event for other modules
-    events.emit('created', player, this)
-    // Let the client know it succeeded
-    return callback(null, player.id)
-  }).catch((error) => {
-    winston.error('Player creation error: %s', error)
-    return callback('Could not create a player instance')
+
+  jwt.verify(data.account, process.env.JWT_SECRET, (err, decoded) => {
+    if (err !== null) {
+      winston.error(err)
+      return callback('Decoding fail')
+    }
+    if (decoded !== null | typeof (decoded) !== 'undefined') {
+      // Build a new player instance
+      database.connection.models.player.build({ account: decoded.id }).save().then((player) => {
+        // Assign the player id to the socket
+        this.data.player = { id: player.id }
+        // Emit the created event for other modules
+        events.emit('created', player, this)
+        // Let the client know it succeeded
+        return callback(null, player.id)
+      }).catch((error) => {
+        winston.error('Player creation error: %s', error)
+        return callback('Could not create a player instance')
+      })
+    }
   })
 }
 /**

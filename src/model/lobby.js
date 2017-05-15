@@ -17,6 +17,10 @@ module.exports = function (sequelize, DataTypes) {
         isUUID: 4
       }
     },
+    host: {
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     public: {
       type: DataTypes.BOOLEAN,
       defaultValue: false,
@@ -64,7 +68,7 @@ module.exports = function (sequelize, DataTypes) {
     classMethods: {
       associate: function (models) {
         // The lobby always contains players
-        Lobby.hasMany(models.player, {foreignKey: 'lobby'})
+        Lobby.hasMany(models.player, {foreignKey: 'lobby', as: 'Players'})
         // The lobby always has one host
         Lobby.hasOne(models.player, {foreignKey: 'host'})
       }

@@ -31,7 +31,10 @@ module.exports = function (sequelize, DataTypes) {
     // Password
     password: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      set: function (val) {
+        this.setDataValue('password', bcrypt.hashSync(val, 10))
+      }
     },
     // Account access token
     token: {
@@ -88,8 +91,8 @@ module.exports = function (sequelize, DataTypes) {
     classMethods: {
       associate: function (models) {
         // NOTE models contains all models
-        Account.hasMany(models.player, {foreignKey: 'account'})
-        Account.hasMany(models.purchase, {foreignKey: 'account'})
+        Account.hasMany(models.player, {foreignKey: 'account', as: 'players'})
+        Account.hasMany(models.purchase, {foreignKey: 'account', as: 'purchases'})
       }
     }
   })
