@@ -41,9 +41,9 @@ const logout = function (data, callback) {
     account.update({
       token: null
     }).catch((error) => {
-        winston.error(error)
-        callback('error_couldnt_update_token')
-      })
+      winston.error(error)
+      callback('error_couldnt_update_token')
+    })
     callback(null)
   }).catch((error) => {
     winston.error(error)
