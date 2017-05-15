@@ -35,6 +35,14 @@ const ERR_LOGIN = {
   nopass: 'Please enter a password'
 }
 
+const logout = (account, callback) => {
+  account.update({
+    token: null
+  }).then(() => {
+    winston.error(error)
+    return callback('Could not logout the account instance')
+}
+
 const login = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
@@ -149,4 +157,4 @@ let register = (data, callback) => {
  * Exports the methods we want to provide
  * @type {Object}
  */
-module.exports = {login, register}
+module.exports = {login, logout, register}
