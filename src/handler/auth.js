@@ -35,12 +35,16 @@ const ERR_LOGIN = {
   nopass: 'Please enter a password'
 }
 
-const logout = (account, callback) => {
-  account.update({
-    token: null
-  }).then((error) => {
-    winston.error(error)
-    return callback('Could not logout the account instance')
+const logout = (data, callback) => {
+  // Get account
+  database.connection.models.account.findOne({ where: {token: data.token }
+  }).then((account => {
+    account.update({
+      token: null
+    }).then((error) => {
+      winston.error(error)
+      return callback('Could not logout the account instance')
+    })
   })
 }
 
