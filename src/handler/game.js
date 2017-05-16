@@ -291,6 +291,7 @@ const info = function (data, callback) {
     })
   }).catch((error) => {
     winston.error(error)
+    callback('error_game_not_found')
   })
 }
 
