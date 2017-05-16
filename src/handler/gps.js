@@ -5,8 +5,9 @@
  */
 const winston = require('winston')
 const player = require('./player')
+const socket = require('socket.io')()
 const database = require('../lib/database')
-const socket = require('../lib/socket')
+
 
 /**
  * Handle the GPS update events
@@ -59,7 +60,7 @@ const update = function (data, callback) {
  */
 const attachEvents = function (player) {
   socket.data.gps = {}
-  socket.on('gps:update', update)
+  socket.sockets.on('gps:update', update)
 }
 
 /**
