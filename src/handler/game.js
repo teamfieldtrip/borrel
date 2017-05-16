@@ -103,24 +103,26 @@ const buildInformationData = (playerId, gameId) => {
       return reject(new Error('invalid player!'))
     }
     if (gameId === null || typeof gameId !== 'string') {
-      return reject(new Error('invalid player!'))
+      return reject(new Error('invalid game!'))
     }
     resolve()
   }).then(() => {
     return get(gameId)
   }).then((game) => {
-    // Add gmae info
+   // Add game info
     resultData.id = game.id
     resultData.game = clean('game', game)
 
-    // Build a clean player list
-    let playerList = []
-    game.players.forEach((ply) => {
-      playerList.push(clean('player', ply))
-    })
+    if (game.players !== 'undefined') {
+      // Build a clean player list
+      let playerList = []
+      game.players.forEach((ply) => {
+        playerList.push(clean('player', ply))
+      })
 
-    // And add it
-    resultData.players = playerList
+      // And add it
+      resultData.players = playerList
+    }
 
     // Get current player
     return player.get(playerId)
@@ -277,16 +279,19 @@ const join = function (data, callback) {
  */
 const info = function (data, callback) {
   database.connection.models.game.findById(data.gameId).then((game) => {
-    if (typeof data.game === 'undefined' || data.game === null) {
+    if (typeof game === 'undefined' || data.game === null) {
       return callback('error_not_in_game')
     }
 
-    buildInformationData(this.data.player, this.data.game).then((data) => {
+    buildInformationData(this.data.player.id, game.id).then((data) => {
       callback(null, data)
     }).catch((error) => {
       winston.error('Failed to send info request; %s', error)
       callback('Failed to send info request')
     })
+  }).catch((error) => {
+    console.log(data.gameId)
+    winston.error('Failed to get game')
   })
 }
 
