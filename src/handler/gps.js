@@ -58,7 +58,7 @@ const update = function (data, callback) {
  * @param socket The socket instance
  */
 const attachEvents = function (player) {
-  socket.data.gps = {}
+  socket.data = {gps: null}
   socket.sockets.on('gps:update', update)
 }
 
