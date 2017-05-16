@@ -13,6 +13,7 @@ const states = require('../constant/state')
 
 // Requirements for routes
 const auth = require('../handler/auth')
+const game = require('../handler/game')
 const gameplay = require('../handler/gameplay')
 const player = require('../handler/player')
 const lobby = require('../handler/lobby')
@@ -103,6 +104,11 @@ router
   .addRoute('auth:login', auth.login, states.guest)
   .addRoute('auth:logout', auth.logout, states.all)
   .addRoute('auth:register', auth.register, states.guest)
+  // Game
+  .addRoute('game:create', game.create, states.all)
+  .addRoute('game:join', game.join, states.all)
+  .addRoute('game:info', game.info, states.all)
+  .addRoute('game:tag', game.tag, states.all)
   // Gameplay
   .addRoute('gameplay:setTargets', gameplay.setTargets, states.all)
   // Player sessions
