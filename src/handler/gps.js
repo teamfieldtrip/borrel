@@ -6,6 +6,7 @@
 const winston = require('winston')
 const player = require('./player')
 const database = require('../lib/database')
+const socket = require('../lib/socket')
 
 /**
  * Handle the GPS update events
@@ -56,7 +57,7 @@ const update = function (data, callback) {
  * @param player The player instance
  * @param socket The socket instance
  */
-const attachEvents = function (player, socket) {
+const attachEvents = function (player) {
   socket.data.gps = {}
   socket.on('gps:update', update)
 }

@@ -7,6 +7,7 @@ const EventEmitter = require('events').EventEmitter
 const winston = require('winston')
 const jwt = require('jsonwebtoken')
 const database = require('../lib/database')
+const socket = require('../lib/socket')
 
 const events = new EventEmitter()
 /**
