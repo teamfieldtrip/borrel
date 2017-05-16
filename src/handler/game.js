@@ -276,7 +276,7 @@ const join = function (data, callback) {
  * @param  {Function} callback Callback to socket.io
  */
 const info = function (data, callback) {
-  if (typeof this.data.game === 'undefined' || this.data.game === null) {
+  if (typeof data.game === 'undefined' || data.game === null) {
     return callback('error_not_in_game')
   }
 
