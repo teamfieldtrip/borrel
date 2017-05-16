@@ -8,7 +8,6 @@ const player = require('./player')
 const socket = require('socket.io')()
 const database = require('../lib/database')
 
-
 /**
  * Handle the GPS update events
  * @param data JSON object with latitude, longitude and timestamp

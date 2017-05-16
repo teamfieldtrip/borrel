@@ -276,15 +276,17 @@ const join = function (data, callback) {
  * @param  {Function} callback Callback to socket.io
  */
 const info = function (data, callback) {
-  if (typeof data.game === 'undefined' || data.game === null) {
-    return callback('error_not_in_game')
-  }
+  database.connection.models.game.findById(data.gameId).then((game) => {
+    if (typeof data.game === 'undefined' || data.game === null) {
+      return callback('error_not_in_game')
+    }
 
-  buildInformationData(this.data.player, this.data.game).then((data) => {
-    callback(null, data)
-  }).catch((error) => {
-    winston.error('Failed to send info request; %s', error)
-    callback('Failed to send info request')
+    buildInformationData(this.data.player, this.data.game).then((data) => {
+      callback(null, data)
+    }).catch((error) => {
+      winston.error('Failed to send info request; %s', error)
+      callback('Failed to send info request')
+    })
   })
 }
 
