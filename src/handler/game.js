@@ -290,8 +290,7 @@ const info = function (data, callback) {
       callback('Failed to send info request')
     })
   }).catch((error) => {
-    console.log(data.gameId)
-    winston.error('Failed to get game')
+    winston.error(error)
   })
 }
 
