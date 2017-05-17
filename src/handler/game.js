@@ -113,16 +113,14 @@ const buildInformationData = (playerId, gameId) => {
     resultData.id = game.id
     resultData.game = clean('game', game)
 
-    if (game.players !== 'undefined') {
-      // Build a clean player list
-      let playerList = []
-      game.players.forEach((ply) => {
-        playerList.push(clean('player', ply))
-      })
+    // Build a clean player list
+    let playerList = []
+    game.player.forEach((ply) => {
+      playerList.push(clean('player', ply))
+    })
 
-      // And add it
-      resultData.players = playerList
-    }
+    // And add it
+    resultData.players = playerList
 
     // Get current player
     return player.get(playerId)
@@ -291,6 +289,7 @@ const info = function (data, callback) {
     })
   }).catch((error) => {
     winston.error(error)
+    callback('Failed to retrieve game')
   })
 }
 
