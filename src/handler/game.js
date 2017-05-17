@@ -125,18 +125,17 @@ const buildInformationData = (playerId, gameId) => {
 
       // Get current player
       return player.get(playerId)
+    }).then((player) => {
+      // Get the player target, and send it to the player as well
+      resultData.target = clean('player', player.target)
+
+      // But make sure the player's target isn't send.
+      resultData.target.target = null
+    }).catch((error) => {
+      winston.error('Getting players from lobby failed: %s', error)
     })
-  }).then((player) => {
-
-    if (player.target !== null || player.target !== 'undefined') {
-    // Get the player target, and send it to the player as well
-    resultData.target = clean('player', player.target)
-
-    // But make sure the player's target isn't send.
-    resultData.target.target = null
-    }
   }).catch((error) => {
-    winston.error('Join game failed: %s', error)
+    winston.error('Building info failed: %s', error)
     throw new Error('Failed to retrieve information!')
   })
 }
