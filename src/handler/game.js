@@ -113,17 +113,21 @@ const buildInformationData = (playerId, gameId) => {
     resultData.id = game.id
     resultData.game = clean('game', game)
 
-    // Build a clean player list
-    let playerList = []
-    game.player.forEach((ply) => {
-      playerList.push(clean('player', ply))
-    })
+    database.connection.models.player.findAll( { where: { game: game.id }
+    }).then((players) => {
 
-    // And add it
-    resultData.players = playerList
+      // Build a clean player list
+      let playerList = []
+      players.forEach((ply) => {
+        playerList.push(clean('player', ply))
+      })
 
-    // Get current player
-    return player.get(playerId)
+      // And add it
+      resultData.players = playerList
+
+      // Get current player
+      return players.get(playerId)
+    }
   }).then((player) => {
     // Get the player target, and send it to the player as well
     resultData.target = clean('player', player.target)
