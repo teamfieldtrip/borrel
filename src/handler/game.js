@@ -124,7 +124,7 @@ const buildInformationData = (playerId, gameId) => {
       resultData.players = playerList
 
       // Get current player
-      return players.get(playerId)
+      return player.get(playerId)
     })
   }).then((player) => {
     // Get the player target, and send it to the player as well
