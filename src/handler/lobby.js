@@ -241,7 +241,7 @@ const start = function (callback) {
       if (lobby.host !== this.data.player.id) {
         return callback('error_lobby_access_denied')
       }
-
+      console.log('Creating game')
       game.create(lobby, callback)
     }).catch((error) => {
       winston.error('Lobby find error: %s', error)
