@@ -112,7 +112,7 @@ const buildInformationData = (playerId, gameId) => {
    // Add game info
     resultData.id = game.id
     resultData.game = clean('game', game)
-    database.connection.models.player.findAll({ where: { game: game.id }
+    return database.connection.models.player.findAll({ where: { game: game.id }
     }).then((players) => {
       // Build a clean player list
       let playerList = []
@@ -131,6 +131,9 @@ const buildInformationData = (playerId, gameId) => {
 
       // But make sure the player's target isn't send.
       resultData.target.target = null
+
+      // Return resultData
+      return resultData
     }).catch((error) => {
       winston.error('Getting players from lobby failed: %s', error)
     })
