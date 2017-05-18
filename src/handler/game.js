@@ -98,7 +98,7 @@ const buildInformationData = (playerId, gameId) => {
   }
   let resultData = {}
 
-  new Promise(function (resolve, reject) {
+  return new Promise(function (resolve, reject) {
     if (playerId === null || typeof playerId !== 'string') {
       return reject(new Error('invalid player!'))
     }
