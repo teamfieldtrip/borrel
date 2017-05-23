@@ -64,7 +64,7 @@ const create = function (data, callback) {
   database.connection.models.lobby.build(modelData).save().then((lobby) => {
     database.connection.models.player.update({ lobby: lobby.id }, { where: { id: this.data.player.id } }).then(() => {
       // Assign the lobby id to the socket
-      this.data.lobby = {id: lobby.id}
+      this.data.lobby = {id: lobby.id, host: true}
       this.join('lobby-' + lobby.id)
       // Emit the created event for other modules
       events.emit('created', lobby, this)
@@ -134,47 +134,56 @@ const join = function (data, callback) {
   }
 }
 
-const leave = function (data, callback) {
-  database.connection.models.lobby.findById(data.playerId).then((player) => {
-    if (typeof player === 'undefined' || player === null) {
-      return callback('error_player_not_found')
-    }
-    player.lobby = null
-    player.save({fields: ['lobby']}).then(() => {
-      callback(null)
+const leave = function () {
+  if (typeof this.data.player !== 'undefined' && typeof this.data.lobby !== 'undefined') {
+    database.connection.models.player.findById(this.data.player.id).then((player) => {
+      if (typeof player === 'undefined' || player === null) {
+        return
+      }
+      player.lobby = null
+      player.save({fields: ['lobby']}).then(() => {
+        let lobbyName = 'lobby-' + this.data.lobby.id
+
+        if (this.data.lobby.host === true) {
+          socket.connection.to(lobbyName).emit('lobby:destroy')
+        } else {
+          this.leave(lobbyName)
+          socket.connection.to(lobbyName).emit('lobby:left', {
+            player_id: this.data.player.id
+          })
+        }
+
+        this.data.lobby = undefined
+      })
     })
-  })
+  }
 }
 
 const info = function (data, callback) {
-  if (typeof this.data.lobby === 'undefined') {
-    database.connection.models.lobby.findById(data.id).then((lobby) => {
-      if (typeof lobby === 'undefined' || lobby === null) {
-        return callback('error_lobby_not_found')
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    if (typeof lobby === 'undefined' || lobby === null) {
+      return callback('error_lobby_not_found')
+    }
+
+    getAccountsInLobby(lobby.id).then((players) => {
+      if (players.length === lobby.amountOfPlayers) {
+        return callback('error_lobby_full')
       }
 
-      getAccountsInLobby(lobby.id).then((players) => {
-        if (players.length === lobby.amountOfPlayers) {
-          return callback('error_lobby_full')
-        }
+      let host = lodash.find(players, (player) => { return player.player_id === lobby.host })
+      if (typeof host === 'undefined') {
+        host = { name: 'UNKNOWN' }
+      }
 
-        let host = lodash.find(players, (player) => { return player.player_id === lobby.host })
-        if (typeof host === 'undefined') {
-          host = { name: 'UNKNOWN' }
-        }
-
-        return callback(null, players.length, lobby.amountOfPlayers, host.name)
-      }).catch((error) => {
-        winston.error('Could not find accounts in lobby: %s', error)
-        return callback('error_lobby_data')
-      })
+      return callback(null, players.length, lobby.amountOfPlayers, host.name, lobby.duration)
     }).catch((error) => {
-      winston.error('Lobby find error: %s', error)
+      winston.error('Could not find accounts in lobby: %s', error)
       return callback('error_lobby_data')
     })
-  } else {
-    return callback('error_player_joined')
-  }
+  }).catch((error) => {
+    winston.error('Lobby find error: %s', error)
+    return callback('error_lobby_data')
+  })
 }
 
 /**
