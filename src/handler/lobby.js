@@ -147,34 +147,30 @@ const leave = function (data, callback) {
 }
 
 const info = function (data, callback) {
-  if (typeof this.data.lobby === 'undefined') {
-    database.connection.models.lobby.findById(data.id).then((lobby) => {
-      if (typeof lobby === 'undefined' || lobby === null) {
-        return callback('error_lobby_not_found')
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    if (typeof lobby === 'undefined' || lobby === null) {
+      return callback('error_lobby_not_found')
+    }
+
+    getAccountsInLobby(lobby.id).then((players) => {
+      if (players.length === lobby.amountOfPlayers) {
+        return callback('error_lobby_full')
       }
 
-      getAccountsInLobby(lobby.id).then((players) => {
-        if (players.length === lobby.amountOfPlayers) {
-          return callback('error_lobby_full')
-        }
+      let host = lodash.find(players, (player) => { return player.player_id === lobby.host })
+      if (typeof host === 'undefined') {
+        host = { name: 'UNKNOWN' }
+      }
 
-        let host = lodash.find(players, (player) => { return player.player_id === lobby.host })
-        if (typeof host === 'undefined') {
-          host = { name: 'UNKNOWN' }
-        }
-
-        return callback(null, players.length, lobby.amountOfPlayers, host.name)
-      }).catch((error) => {
-        winston.error('Could not find accounts in lobby: %s', error)
-        return callback('error_lobby_data')
-      })
+      return callback(null, players.length, lobby.amountOfPlayers, host.name, lobby.duration)
     }).catch((error) => {
-      winston.error('Lobby find error: %s', error)
+      winston.error('Could not find accounts in lobby: %s', error)
       return callback('error_lobby_data')
     })
-  } else {
-    return callback('error_player_joined')
-  }
+  }).catch((error) => {
+    winston.error('Lobby find error: %s', error)
+    return callback('error_lobby_data')
+  })
 }
 
 /**
