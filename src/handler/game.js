@@ -151,16 +151,6 @@ const buildInformationData = (playerId, gameId) => {
  * went well a lobby-wide event is emitted.
  */
 const create = function (lobby, callback) {
-/**
- * Needs rewriting, lobby won't be an instance of Lobby, as it hasn't been made
- * via a constructor of this class.
- *
- *   if (!(lobby instanceof Lobby)) {
- *   winston.error('Lobby is of invalid type!')
- *   winston.log(lobby)
- *   return callback('lobby_create_failed')
- * }
- */
 
   // Get lobby ID
   let lobbyId = lobby.id
@@ -202,7 +192,6 @@ const create = function (lobby, callback) {
   }).then((players) => {
     // Get list of targets
     players = gameplay.assignTargets(players)
-
     // Update them all
     let poms = []
     players.forEach((ply) => {
@@ -213,7 +202,6 @@ const create = function (lobby, callback) {
   }).then(() => {
     // Inform everyone in the lobby to move to the given game.
     socket.connection.to(`lobby-${lobbyId}`).emit('lobby:ready', gameId)
-
     // Report there was no error
     return callback(null, gameId)
   }).catch((error) => {
@@ -284,7 +272,7 @@ const join = function (data, callback) {
  */
 const info = function (data, callback) {
   database.connection.models.game.findById(data.gameId).then((game) => {
-    if (typeof game === 'undefined' || data.game === null) {
+    if (typeof game === 'undefined' || game === null) {
       return callback('error_not_in_game')
     }
 
@@ -305,7 +293,7 @@ const info = function (data, callback) {
  * 1. verify the data
  * 2. verify the tag
  * 3. inform the tagged player he's dead (and count it)
- * 4. inform the taggee that the tag's vaid (and count it)
+ * 4. inform the taggee that the tag's valid (and count it)
  * 5. assign the taggee a new target
  *
  * @param  {[type]}   data     [description]

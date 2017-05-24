@@ -36,8 +36,8 @@ const assignTargets = (playerList) => {
           return ply.target === target
         }).length
         if (filterCount < 2) {
-          player.target = target
-          console.log(`Assigning ${player.name} → ${target.name}`)
+          player.target = target.id
+          console.log(`Assigning ${player.id} → ${target.id}`)
         }
       })
       targets = lodash.shuffle(targets)

@@ -136,7 +136,7 @@ const join = function (data, callback) {
 }
 
 const leave = function (data, callback) {
-  database.connection.models.lobby.findById(data.playerId).then((player) => {
+  database.connection.models.lobby.findById(this.data.player.id).then((player) => {
     if (typeof player === 'undefined' || player === null) {
       return callback('error_player_not_found')
     }
@@ -241,7 +241,6 @@ const start = function (callback) {
       if (lobby.host !== this.data.player.id) {
         return callback('error_lobby_access_denied')
       }
-      console.log('Creating game')
       game.create(lobby, callback)
     }).catch((error) => {
       winston.error('Lobby find error: %s', error)
