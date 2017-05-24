@@ -2,23 +2,28 @@
  * Handles the leaderboard
  *
  * @author Sven Boekelder
+ * @author Remco Schipper
  */
 
 const EventEmitter = require('events').EventEmitter
-const winston = require('winston')
 const lodash = require('lodash')
-const database = require('../lib/database')
+const lobby = require('./lobby')
 
 const events = new EventEmitter()
 
-const results = function (data, callback) {
-  database.connection.models.player.findAll({ where: { lobby: data.lobbyId }
-  }).then((players) => {
-    if (players === 'undefined' || players === null) {
-      winston.error('Playerlist not found')
-      return callback('error_no_players')
-    }
-    return lodash.sortBy(players, 'score')
+const results = function (callback) {
+  lobby.getAccountsInLobby(this.data.lobby.id).then((players) => {
+    const data = lodash.map(players, (player) => {
+      return {
+        player_id: player.player_id,
+        score: player.score,
+        name: player.name
+      }
+    })
+
+    return callback(null, lodash.sortBy(data, 'score'))
+  }).catch(() => {
+    return callback('error_no_score')
   })
 }
 
