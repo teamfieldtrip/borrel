@@ -151,7 +151,6 @@ const buildInformationData = (playerId, gameId) => {
  * went well a lobby-wide event is emitted.
  */
 const create = function (lobby, callback) {
-
   // Get lobby ID
   let lobbyId = lobby.id
   let gameId = null
