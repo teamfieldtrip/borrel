@@ -17,6 +17,7 @@ const game = require('../handler/game')
 const gameplay = require('../handler/gameplay')
 const player = require('../handler/player')
 const lobby = require('../handler/lobby')
+const leaderboard = require('../handler/leaderboard')
 
 /**
  * A router handler, has some utility funtions
@@ -124,6 +125,8 @@ router
   .addRoute('lobby:start', lobby.start, states.all)
   .addRoute('lobby:players', lobby.players, states.all)
   .addRoute('lobby:map', lobby.map, states.all)
+  // Leaderboard
+  .addRoute('leaderboard:results', leaderboard.results, states.all)
 
 // Export router
 module.exports = router

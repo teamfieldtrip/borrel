@@ -28,6 +28,7 @@ const getAccountsInLobby = function (lobbyId) {
           return {
             account_id: account.id,
             player_id: player.id,
+            score: player.score,
             name: account.name,
             team: player.team
           }
@@ -279,4 +280,4 @@ const map = function (callback) {
   }
 }
 
-module.exports = {events, create, resume, info, join, leave, list, start, map, players}
+module.exports = {events, create, resume, info, join, leave, list, start, map, players, getAccountsInLobby}
