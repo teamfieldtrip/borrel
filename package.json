@@ -30,6 +30,7 @@
     "file-exists": "3.0.2",
     "finalhandler": "1.0.1",
     "foreman": "2.0.0",
+    "geolib": "2.0.22",
     "jsonwebtoken": "7.3.0",
     "lodash": "4.17.4",
     "mysql": "2.13.0",
