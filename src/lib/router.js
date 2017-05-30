@@ -113,6 +113,7 @@ router
   .addRoute('lobby:fetchPlayers', lobby.fetchPlayers, states.all)
   .addRoute('lobby:info', lobby.info, states.all)
   .addRoute('lobby:join', lobby.join, states.all)
+  .addRoute('lobby:list', lobby.list, states.all)
   .addRoute('lobby:start', lobby.start, states.all)
 
 // Export router

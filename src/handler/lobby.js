@@ -218,6 +218,9 @@ const list = function (data, callback) {
   }
 }
 
+/**
+ * Adds player to lobby
+ */
 const addPlayer = function (data, callback) {
   database.connection.models.player.findById(data.player.id).then((player) => {
     // Check if player exists
@@ -241,6 +244,9 @@ const addPlayer = function (data, callback) {
   })
 }
 
+/**
+ * Fetch players in lobby
+ */
 const fetchPlayers = function (data, callback) {
   database.connection.models.lobby.findById(data.id).then((lobby) => {
     // Check if lobby exists
