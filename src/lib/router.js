@@ -13,9 +13,11 @@ const states = require('../constant/state')
 
 // Requirements for routes
 const auth = require('../handler/auth')
+const game = require('../handler/game')
 const gameplay = require('../handler/gameplay')
 const player = require('../handler/player')
 const lobby = require('../handler/lobby')
+const leaderboard = require('../handler/leaderboard')
 
 /**
  * A router handler, has some utility funtions
@@ -103,8 +105,14 @@ router
   .addRoute('auth:login', auth.login, states.guest)
   .addRoute('auth:logout', auth.logout, states.all)
   .addRoute('auth:register', auth.register, states.guest)
+  // Game
+  .addRoute('game:create', game.create, states.all)
+  .addRoute('game:join', game.join, states.all)
+  .addRoute('game:info', game.info, states.all)
+  .addRoute('game:tag', game.tag, states.all)
   // Gameplay
   .addRoute('gameplay:setTargets', gameplay.setTargets, states.all)
+  .addRoute('gameplay:tag', gameplay.tag, states.all)
   // Player sessions
   .addRoute('player:create', player.create, states.all)
   .addRoute('player:resume', player.resume, states.all)
@@ -113,8 +121,13 @@ router
   .addRoute('lobby:fetchPlayers', lobby.fetchPlayers, states.all)
   .addRoute('lobby:info', lobby.info, states.all)
   .addRoute('lobby:join', lobby.join, states.all)
+  .addRoute('lobby:leave', lobby.leave, states.all)
   .addRoute('lobby:list', lobby.list, states.all)
   .addRoute('lobby:start', lobby.start, states.all)
+  .addRoute('lobby:players', lobby.players, states.all)
+  .addRoute('lobby:map', lobby.map, states.all)
+  // Leaderboard
+  .addRoute('leaderboard:results', leaderboard.results, states.all)
 
 // Export router
 module.exports = router

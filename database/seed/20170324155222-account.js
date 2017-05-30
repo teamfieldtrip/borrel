@@ -24,7 +24,7 @@ module.exports = {
     }, {
       id: uuids.shift(),
       name: 'Kim Jong-Un',
-      email: 'kim@north-korea',
+      email: 'kim@north-korea.nk',
       password: bcrypt.hashSync('brian', 10),
       coins: 1,
       token: null,
