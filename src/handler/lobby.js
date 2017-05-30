@@ -241,6 +241,48 @@ const list = function (data, callback) {
   }
 }
 
+/**
+ * Adds player to lobby
+ */
+const addPlayer = function (data, callback) {
+  database.connection.models.player.findById(data.player.id).then((player) => {
+    // Check if player exists
+    if (typeof player === 'undefined' || player === null) {
+      return callback('Could not find the player instance')
+    }
+    database.connection.models.lobby.findById(data.lobby.id).then((lobby) => {
+      // Check if lobby exists
+      if (typeof lobby === 'undefined' || lobby === null) {
+        return callback('Could not find the lobby instance')
+      }
+      // Add player to lobby
+      player.belongsTo(lobby)
+    })
+    // Emit the resumed event for other modules
+    events.emit('addPlayer', player.id, this)
+    return callback(null)
+  }).catch((error) => {
+    winston.error('Player adding error: %s', error)
+    return callback('Could not join player')
+  })
+}
+
+/**
+ * Fetch players in lobby
+ */
+const fetchPlayers = function (data, callback) {
+  database.connection.models.lobby.findById(data.id).then((lobby) => {
+    // Check if lobby exists
+    if (typeof lobby === 'undefined' || lobby === null) {
+      return callback('Could not find the lobby instance')
+    }
+    return callback(null, lobby.id)
+  }).catch((error) => {
+    winston.error('Player retrieval error: %s', error)
+    return callback('Could not retrieve players')
+  })
+}
+
 const start = function (callback) {
   if (typeof this.data.lobby !== 'undefined') {
     database.connection.models.lobby.findById(this.data.lobby.id).then((lobby) => {
@@ -248,8 +290,9 @@ const start = function (callback) {
         return callback('error_lobby_not_found')
       }
 
-      if (lobby.host !== this.data.player.id) {
-        return callback('error_lobby_access_denied')
+      if (lobby.host === this.data.player.id) {
+        socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
+        return callback(null)
       }
       game.create(lobby, callback)
     }).catch((error) => {
@@ -280,4 +323,4 @@ const map = function (callback) {
   }
 }
 
-module.exports = {events, create, resume, info, join, leave, list, start, map, players, getAccountsInLobby}
+module.exports = {events, create, resume, info, join, leave, list, start, map, players, getAccountsInLobby, addPlayer, fetchPlayers}
