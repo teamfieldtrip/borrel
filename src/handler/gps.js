@@ -5,7 +5,7 @@
  */
 const winston = require('winston')
 const player = require('./player')
-const socket = require('socket.io')()
+const socket = require('../lib/socket')
 const database = require('../lib/database')
 
 /**
@@ -20,6 +20,7 @@ const update = function (data, callback) {
   // Check if all fields are present
   if (typeof data.time !== 'undefined' && typeof data.latitude !== 'undefined' &&
       typeof data.longitude !== 'undefined' && typeof data.time !== 'undefined') {
+    if (typeof this.data.gps !== 'undefined') {
     // Check if the update is the newer than the last one (async, delay may occur)
     if (typeof this.data.gps.time !== 'undefined' && this.data.gps.time > data.time) {
       return callback('time')
@@ -28,16 +29,17 @@ const update = function (data, callback) {
     if (this.data.gps.latitude === data.latitude && this.data.gps.longitude === data.longitude) {
       return callback('equal')
     }
+    }
     // Set the updated GPS data
     this.data.gps = data
     // Update the player instance
     database.connection.models.player.update({
       latitude: data.latitude,
       longitude: data.longitude
-    }, {where: {id: this.playerId}}).then((player) => {
-      // Emit the location update to the lobby
-      socket.connection.to(`game-${player.game}`).emit('gps:updated', {
-        player: player.id,
+    }, {where: {id: this.data.player.id}}).then(() => {
+      // Emit the location update to the game
+      socket.connection.to(`game-${this.data.game.id}`).emit('gps:updated', {
+        player: this.data.player.id,
         latitude: data.latitude,
         longitude: data.longitude
       })
@@ -52,23 +54,4 @@ const update = function (data, callback) {
   }
 }
 
-/**
- * Attach the events to the socket
- * @param player The player instance
- * @param socket The socket instance
- */
-const attachEvents = function (player) {
-  socket.data = {gps: null}
-  socket.sockets.on('gps:update', update)
-}
-
-/**
- * Attach the events to the player module
- * @param callback
- * @returns {*}
- */
-exports.boot = function (callback) {
-  player.events.on('created', attachEvents)
-  player.events.on('resumed', attachEvents)
-  return callback(null)
-}
+module.exports = {update}

@@ -293,7 +293,7 @@ const start = function (callback) {
       if (lobby.host === this.data.player.id) {
         socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
       }
-      game.create(lobby, callback)
+      game.create(lobby, this, callback)
     }).catch((error) => {
       winston.error('Lobby find error: %s', error)
       return callback('error_lobby_data')
