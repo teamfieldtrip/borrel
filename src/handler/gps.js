@@ -36,7 +36,7 @@ const update = function (data, callback) {
       longitude: data.longitude
     }, {where: {id: this.playerId}}).then((player) => {
       // Emit the location update to the lobby
-      socket.connection.to(`lobby-${player.lobby}`).emit('gps:updated', {
+      socket.connection.to(`game-${player.game}`).emit('gps:updated', {
         player: player.id,
         latitude: data.latitude,
         longitude: data.longitude
