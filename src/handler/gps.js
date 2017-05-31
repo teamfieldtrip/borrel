@@ -4,7 +4,6 @@
  * @author Remco Schipper <github@remcoschipper.com>
  */
 const winston = require('winston')
-const player = require('./player')
 const socket = require('../lib/socket')
 const database = require('../lib/database')
 
@@ -22,13 +21,13 @@ const update = function (data, callback) {
       typeof data.longitude !== 'undefined' && typeof data.time !== 'undefined') {
     if (typeof this.data.gps !== 'undefined') {
     // Check if the update is the newer than the last one (async, delay may occur)
-    if (typeof this.data.gps.time !== 'undefined' && this.data.gps.time > data.time) {
-      return callback('time')
-    }
-    // Check if the player moved
-    if (this.data.gps.latitude === data.latitude && this.data.gps.longitude === data.longitude) {
-      return callback('equal')
-    }
+      if (typeof this.data.gps.time !== 'undefined' && this.data.gps.time > data.time) {
+        return callback('time')
+      }
+      // Check if the player moved
+      if (this.data.gps.latitude === data.latitude && this.data.gps.longitude === data.longitude) {
+        return callback('equal')
+      }
     }
     // Set the updated GPS data
     this.data.gps = data
