@@ -292,7 +292,6 @@ const start = function (callback) {
 
       if (lobby.host === this.data.player.id) {
         socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
-        return callback(null)
       }
       game.create(lobby, callback)
     }).catch((error) => {

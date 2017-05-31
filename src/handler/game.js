@@ -117,7 +117,8 @@ const buildInformationData = (playerId, gameId) => {
       // Build a clean player list
       let playerList = []
       players.forEach((ply) => {
-        playerList.push(clean('player', ply))
+        // playerList.push(clean('player', ply))
+        playerList.push(ply)
       })
 
       // And add it
