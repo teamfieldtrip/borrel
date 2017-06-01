@@ -1,0 +1,64 @@
+@startuml
+
+' Styling
+skinparam {
+    MonoChrome true
+	BackgroundColor White
+    BorderThickness 0.5
+
+    ' Change line types'
+    LineType polyline
+
+    ' Make some elements not emit a shadow
+    ActorShadowing false
+
+    ' Change all background to transparent
+    UseCaseBackgroundColor transparent
+    ActorBackgroundColor transparent
+    NoteBackgroundColor transparent
+    PackageBackgroundColor transparent
+
+    ' Change some borders
+    NoteBorderColor lightgrey
+    PackageBorderThickness 0.25
+}
+
+' Actor definition'
+actor :Guest: as G
+actor :Player: as P
+actor :Game host: as H
+
+' Container creation
+left to right direction
+package "Spirit Hunt" {
+    (Create game) as GC
+    (View QR-code) as VQ
+
+    G --> (Log in)
+    G -> (Sign up)
+
+    P -> (GC)
+    P -> (Join game)
+    P -> (Tag players)
+    P -> (View scores)
+    P -> (View co-players)
+    P -> (VQ)
+    P -> (Edit settings)
+    P -> (Log out)
+
+    P <|- H
+    H -> (Remove players)
+    H -> (Launch game)
+}
+
+note right of (GC)
+    Starting a game makes
+    the <i>Player</i> a <i>Game host</i>
+endnote
+
+note right of (VQ)
+    QR-code is used to let
+    other <i>Player</i>s join games
+endnote
+
+@enduml
