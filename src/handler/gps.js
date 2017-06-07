@@ -6,7 +6,7 @@
 const winston = require('winston')
 const socket = require('../lib/socket')
 const database = require('../lib/database')
-const player = require('../handler/player')
+// const player = require('../handler/player')
 
 /**
  * Handle the GPS update events
@@ -33,7 +33,7 @@ const update = function (data, callback) {
     }
     // Set the updated GPS data
     this.data.gps = data
-    if (this.data.player == null || this.data.player == 'undefined'){
+    if (this.data.player === null || this.data.player === 'undefined') {
       winston.error('Player disconnected from socket')
       return callback('no_player_connected')
     }
