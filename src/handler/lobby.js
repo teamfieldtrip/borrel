@@ -60,9 +60,6 @@ const create = function (data, callback) {
   const fields = ['duration', 'powerUpsEnabled',
     'amountOfPlayers', 'amountOfRounds', 'amountOfLives',
     'centerLatitude', 'centerLongitude', 'borderLongitude', 'borderLatitude']
-  const modelData = lodash.pick(data, fields)
-  modelData.host = this.player.id
-  // Build a new lobby instance
 
   const modelData = lodash.pick(data, fields)
   modelData.host = this.data.player.id
