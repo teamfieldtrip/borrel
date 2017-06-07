@@ -293,10 +293,18 @@ const start = function (callback) {
         return callback('error_lobby_not_found')
       }
 
-      if (lobby.host === this.data.player.id) {
-        socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
-      }
-      game.create(lobby, callback)
+      database.connection.models.player.count({ where: { lobby: lobby.id }
+      }).then((count) => {
+        if (count <= 1) {
+          winston.error('Not enough players in lobby')
+          return callback('not_enough_players')
+        }
+
+        if (lobby.host === this.data.player.id) {
+          socket.connection.to('lobby-' + lobby.id).emit('lobby:started')
+        }
+        game.create(lobby, this, callback)
+      })
     }).catch((error) => {
       winston.error('Lobby find error: %s', error)
       return callback('error_lobby_data')

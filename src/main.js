@@ -13,16 +13,13 @@ const winston = require('winston')
 const database = require('./lib/database')
 const socket = require('./lib/socket')
 
-const gps = require('./handler/gps')
-
 // Powered by http://trumpipsum.net/
 winston.log('I know words. I have the best words.')
 
 // List of methods that start
 const mainMethods = [
   database.boot,
-  socket.boot,
-  gps.boot
+  socket.boot
 ]
 
 // Start methods

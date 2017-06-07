@@ -111,13 +111,12 @@ const buildInformationData = (playerId, gameId) => {
   }).then((game) => {
    // Add game info
     resultData.id = game.id
-    resultData.game = clean('game', game)
+    resultData.game = game
     return database.connection.models.player.findAll({ where: { game: game.id }
     }).then((players) => {
       // Build a clean player list
       let playerList = []
       players.forEach((ply) => {
-        // playerList.push(clean('player', ply))
         playerList.push(ply)
       })
 
@@ -128,7 +127,7 @@ const buildInformationData = (playerId, gameId) => {
       return player.get(playerId)
     }).then((player) => {
       // Get the player target, and send it to the player as well
-      resultData.target = clean('player', player.target)
+      resultData.target = player.target
 
       // But make sure the player's target isn't send.
       resultData.target.target = null
@@ -151,7 +150,7 @@ const buildInformationData = (playerId, gameId) => {
  * @param {Callable} callback Called with an error if there's an error. If all
  * went well a lobby-wide event is emitted.
  */
-const create = function (lobby, callback) {
+const create = function (lobby, clientSocket, callback) {
   // Get lobby ID
   let lobbyId = lobby.id
   let gameId = null
@@ -202,6 +201,7 @@ const create = function (lobby, callback) {
   }).then(() => {
     // Inform everyone in the lobby to move to the given game.
     socket.connection.to(`lobby-${lobbyId}`).emit('lobby:ready', gameId)
+    clientSocket.data.game = {id: gameId}
     // Report there was no error
     return callback(null, gameId)
   }).catch((error) => {
@@ -237,15 +237,15 @@ const join = function (data, callback) {
     this.join(roomName(gameId))
 
     // Add game ID to the connection data
-    this.data.game = gameId
+    this.data.game = {id: gameId}
 
     // Build a clean player list
     let playerList = []
     game.players.forEach((ply) => {
-      playerList.push(clean('player', ply))
+      playerList.push(ply)
     })
 
-    resultData.game = clean('game', game)
+    resultData.game = game
     resultData.players = playerList
 
     // Get current player
@@ -275,6 +275,9 @@ const info = function (data, callback) {
     if (typeof game === 'undefined' || game === null) {
       return callback('error_not_in_game')
     }
+
+    this.join(roomName(game.id))
+    this.data.game = {id: game.id}
 
     buildInformationData(this.data.player.id, game.id).then((data) => {
       callback(null, data)

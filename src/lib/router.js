@@ -15,6 +15,7 @@ const states = require('../constant/state')
 const auth = require('../handler/auth')
 const game = require('../handler/game')
 const gameplay = require('../handler/gameplay')
+const gps = require('../handler/gps')
 const player = require('../handler/player')
 const lobby = require('../handler/lobby')
 const leaderboard = require('../handler/leaderboard')
@@ -113,6 +114,8 @@ router
   // Gameplay
   .addRoute('gameplay:setTargets', gameplay.setTargets, states.all)
   .addRoute('gameplay:tag', gameplay.tag, states.all)
+  // GPS
+  .addRoute('gps:update', gps.update, states.all)
   // Player sessions
   .addRoute('player:create', player.create, states.all)
   .addRoute('player:resume', player.resume, states.all)
