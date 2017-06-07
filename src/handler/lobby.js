@@ -293,7 +293,7 @@ const start = function (callback) {
       database.connection.models.player.count({ where: { lobby: lobby.id }
       }).then((count) => {
         if (count <= 1) {
-          winston.error('Not enough Players in Lobby')
+          winston.error('Not enough players in lobby')
           return callback('not_enough_players')
         }
 
