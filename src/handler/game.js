@@ -111,13 +111,12 @@ const buildInformationData = (playerId, gameId) => {
   }).then((game) => {
    // Add game info
     resultData.id = game.id
-    resultData.game = clean('game', game)
+    resultData.game = game
     return database.connection.models.player.findAll({ where: { game: game.id }
     }).then((players) => {
       // Build a clean player list
       let playerList = []
       players.forEach((ply) => {
-        // playerList.push(clean('player', ply))
         playerList.push(ply)
       })
 
@@ -128,7 +127,7 @@ const buildInformationData = (playerId, gameId) => {
       return player.get(playerId)
     }).then((player) => {
       // Get the player target, and send it to the player as well
-      resultData.target = clean('player', player.target)
+      resultData.target = player.target
 
       // But make sure the player's target isn't send.
       resultData.target.target = null
