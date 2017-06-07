@@ -85,7 +85,7 @@ const tag = function (data, callback) {
       // setTargets
       player.score++
       player.target = null
-      
+ 
       socket.connection.to(`game-${this.data.game.id}`).emit('gameplay:tagged', {
         invoker: player.id,
         victim: data.targetId
