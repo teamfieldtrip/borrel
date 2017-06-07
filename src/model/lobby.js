@@ -35,12 +35,10 @@ module.exports = function (sequelize, DataTypes) {
       allowNull: false
     },
     amountOfRounds: {
-      type: DataTypes.INTEGER(2),
-      allowNull: false
+      type: DataTypes.INTEGER(2)
     },
     amountOfLives: {
-      type: DataTypes.INTEGER(2),
-      allowNull: false
+      type: DataTypes.INTEGER(2)
     },
     powerUpsEnabled: {
       type: DataTypes.BOOLEAN,
@@ -62,7 +60,6 @@ module.exports = function (sequelize, DataTypes) {
       type: DataTypes.STRING,
       allowNull: false
     }
-    // TODO Settings
   }, {
     comment: 'A lobby, contains players and settings.',
     indexes: [

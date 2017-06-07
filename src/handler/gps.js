@@ -5,6 +5,7 @@
  */
 const winston = require('winston')
 const player = require('./player')
+const socket = require('socket.io')()
 const database = require('../lib/database')
 
 /**
@@ -33,7 +34,13 @@ const update = function (data, callback) {
     database.connection.models.player.update({
       latitude: data.latitude,
       longitude: data.longitude
-    }, {where: {id: this.playerId}}).then(() => {
+    }, {where: {id: this.playerId}}).then((player) => {
+      // Emit the location update to the lobby
+      socket.connection.to(`lobby-${player.lobby}`).emit('gps:updated', {
+        player: player.id,
+        latitude: data.latitude,
+        longitude: data.longitude
+      })
       // Let the client know it succeeded
       return callback(null, data.latitude, data.longitude)
     }).catch((error) => {
@@ -50,9 +57,9 @@ const update = function (data, callback) {
  * @param player The player instance
  * @param socket The socket instance
  */
-const attachEvents = function (player, socket) {
-  socket.data.gps = {}
-  socket.on('gps:update', update)
+const attachEvents = function (player) {
+  socket.data = {gps: null}
+  socket.sockets.on('gps:update', update)
 }
 
 /**

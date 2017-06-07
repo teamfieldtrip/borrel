@@ -81,36 +81,42 @@
             ]
           )
         }}
-        <!-- Sign Up -->
+        <!-- Retrieve Players -->
         {{
           showForm(
-            'auth:register',
-            'Register',
-            'Enter a name, email and password',
+            'lobby:fetchPlayers',
+            'List Players',
+            'List Players in Lobby',
             [
-              ['name', 'Name'],
-              ['email', 'E-mail'],
-              ['password', 'Password']
+              ['id', 'Id']
             ]
-          )
-        }}
-        <!-- Find lobbies -->
-        {{
-          showForm(
-            'lobby:list',
-            'List lobbies',
-            'Only public lobbies'
           )
         }}
         <!-- Create lobby -->
         {{
           showForm(
-            'lobby:list',
+            'lobby:create',
             'Create lobby',
             'Create a lobby',
             [
-              ['name', 'Name'],
-              ['public', 'Public? (bool)']
+              ['public', 'Public (bool)'],
+              ['duration', 'Duration'],
+              ['amountOfPlayers', 'Player Limit'],
+              ['powerUpsEnabled', 'PowerUps (bool)'],
+              ['centerLatitude', 'Center Lat.'],
+              ['centerLongitude', 'Center Long.'],
+              ['borderLatitude', 'Border Lat.'],
+              ['borderLongitude', 'Border Long.']
+            ]
+          )
+        }}
+        {{
+          showForm(
+            'gameplay:setTargets',
+            'Set Targets',
+            'Set targets for the players',
+            [
+              ['lobbyId', 'Lobby id']
             ]
           )
         }}

@@ -35,6 +35,22 @@ const ERR_LOGIN = {
   nopass: 'Please enter a password'
 }
 
+const logout = function (data, callback) {
+  database.connection.models.account.findOne({ where: { token: data.token }
+  }).then((account) => {
+    account.update({
+      token: null
+    }).catch((error) => {
+      winston.error(error)
+      callback('error_couldnt_update_token')
+    })
+    callback(null)
+  }).catch((error) => {
+    winston.error(error)
+    callback('error_couldnt_find_account')
+  })
+}
+
 const login = function (data, callback) {
   // Check if the callback is set, otherwise the call will cause an error
   callback = (typeof callback === 'function') ? callback : function () {}
@@ -149,4 +165,4 @@ let register = (data, callback) => {
  * Exports the methods we want to provide
  * @type {Object}
  */
-module.exports = {login, register}
+module.exports = {login, logout, register}
