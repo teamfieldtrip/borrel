@@ -1,3 +1,7 @@
+#  :rotating_light: :rotating_light: :rotating_light: THIS REPO IS NOT MAINTAINED  :rotating_light: :rotating_light: :rotating_light:
+
+We've received several mails by GitHub of it having vulnerabilities in dependencies. These will **not** be fixed in the foreseeable future.
+
 # Borrel, powered by NodeJS
 
 [![Build status][shield-build]][link-build]
